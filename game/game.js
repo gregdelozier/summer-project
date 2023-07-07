@@ -83,14 +83,18 @@ function setup() {
 
 function draw() {
   background(220);
+  
+  // draw ladders on board
   // draw board visually
-  drawBoard();
+    drawBoard();
   // draw numbers on board
+  drawLadders();
+  
   drawNumbers();
   // draw snakes on board
   drawSnakes();
-  // draw ladders on board
-  drawLadders();
+  
+  
 }
 
 // maps a logical coordinate to its on board coordinate
@@ -189,7 +193,7 @@ function drawBoard(){
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         strokeWeight(4);
-        rect(x - (i * cutX), y - (j * cutY), cutX, cutY);
+        rect((i * cutX), (j * cutY), cutX, cutY);
       }
     }
   }
@@ -214,9 +218,101 @@ function drawSnakes(){
 
 // draws the ladders
 function drawLadders(){
+
     for(ldr of ladders){
-        fill(ldr.color.red, ldr.color.green, ldr.color.blue);
-        rect(ldr.top.xpos, ldr.top.ypos, 20);
-        rect(ldr.bottom.xpos, ldr.bottom.ypos, 20);
+        // fill(ldr.color.red, ldr.color.green, ldr.color.blue);
+        // let x = ldr.top.
+        // rect(ldr.top.xpos, ldr.top.ypos + 10, 20);
+        // rect(ldr.bottom.xpos, ldr.bottom.ypos, 20);
+
+        let color = [];
+        for(let i = 0; i < 3; i++){
+            color.push(Math.round(random(0,255)));
+        }
+        drawSingleLadder(ldr, color)
     }
+}
+
+
+function drawSingleLadder(ladder, color) {
+    // Four corners of the ladder's top
+    let ladder_top_cell = {
+        'row': ladder.top.y_coord,
+        'col': ladder.top.x_coord,
+
+        'upper_left': {
+            'x': ladder.top.xpos - width / 20,
+            'y': ladder.top.ypos - height / 20
+        },
+
+        'upper_right': {
+            'x': ladder.top.xpos + width / 20,
+            'y': ladder.top.ypos - height / 20
+        },
+
+        'lower_left': {
+            'x': ladder.top.xpos - width / 20,
+            'y': ladder.top.ypos + width / 20
+        },
+
+        'lower_right': {
+            'x': ladder.top.xpos + width / 20,
+            'y': ladder.top.ypos + width / 20
+        },
+
+        'mid_left': {
+            'x': ladder.top.xpos - width / 20,
+            'y': ladder.top.ypos
+        },
+
+        'mid_right': {
+            'x': ladder.top.xpos + width / 20,
+            'y': ladder.top.ypos
+        }
+    }
+
+    let ladder_bottom_cell = {
+        'row': ladder.bottom.y_coord,
+        'col': ladder.bottom.x_coord,
+
+        'upper_left': {
+            'x': ladder.bottom.xpos - width / 20,
+            'y': ladder.bottom.ypos - height / 20
+        },
+
+        'upper_right': {
+            'x': ladder.bottom.xpos + width / 20,
+            'y': ladder.bottom.ypos - height / 20
+        },
+
+        'lower_left': {
+            'x': ladder.bottom.xpos - width / 20,
+            'y': ladder.bottom.ypos + width / 20
+        },
+
+        'lower_right': {
+            'x': ladder.bottom.xpos + width / 20,
+            'y': ladder.bottom.ypos + width / 20
+        },
+
+        'mid_left': {
+            'x': ladder.bottom.xpos - width / 20,
+            'y': ladder.bottom.ypos
+        },
+
+        'mid_right': {
+            'x': ladder.bottom.xpos + width / 20,
+            'y': ladder.bottom.ypos
+        }
+    
+    }
+    // colorMode(RGB, 255)
+    // console.log([ladder.color.red, ladder.color.green, ladder.color.blue])
+    stroke([ladder.color.red, ladder.color.green, ladder.color.blue])
+    line(ladder_top_cell.mid_left.x, ladder_top_cell.mid_left.y, 
+            ladder_bottom_cell.mid_left.x, ladder_bottom_cell.mid_left.y);
+
+    line(ladder_top_cell.mid_right.x, ladder_top_cell.mid_right.y, 
+        ladder_bottom_cell.mid_right.x, ladder_bottom_cell.mid_right.y)  
+    
 }
