@@ -233,6 +233,23 @@ function drawLadders(){
     }
 }
 
+function intersect_point(point1, point2, point3, point4) {
+    const ua = ((point4[0] - point3[0]) * (point1[1] - point3[1]) - 
+              (point4[1] - point3[1]) * (point1[0] - point3[0])) /
+             ((point4[1] - point3[1]) * (point2[0] - point1[0]) - 
+              (point4[0] - point3[0]) * (point2[1] - point1[1]));
+   
+   const ub = ((point2[0] - point1[0]) * (point1[1] - point3[1]) - 
+              (point2[1] - point1[1]) * (point1[0] - point3[0])) /
+             ((point4[1] - point3[1]) * (point2[0] - point1[0]) - 
+              (point4[0] - point3[0]) * (point2[1] - point1[1]));
+   
+   const x = point1[0] + ua * (point2[0] - point1[0]);
+   const y = point1[1] + ua * (point2[1] - point1[1]);
+   
+   return [x, y]
+ }
+ 
 
 function drawSingleLadder(ladder, color) {
     // Four corners of the ladder's top
@@ -306,13 +323,43 @@ function drawSingleLadder(ladder, color) {
         }
     
     }
-    // colorMode(RGB, 255)
-    // console.log([ladder.color.red, ladder.color.green, ladder.color.blue])
+    
     stroke([ladder.color.red, ladder.color.green, ladder.color.blue])
+    
     line(ladder_top_cell.mid_left.x, ladder_top_cell.mid_left.y, 
             ladder_bottom_cell.mid_left.x, ladder_bottom_cell.mid_left.y);
 
     line(ladder_top_cell.mid_right.x, ladder_top_cell.mid_right.y, 
         ladder_bottom_cell.mid_right.x, ladder_bottom_cell.mid_right.y)  
     
+
+    for(var i = ladder_top_cell.mid_left.y + 10; i < ladder_bottom_cell.mid_left.y; i += 15) {
+        
+        // Line 1
+        // (0, i), (width, i)
+        // Line 2
+        horizontal_point1 = [0, i];
+        horizontal_point2 = [width, i];
+
+        ladder_line1_pt = [
+            [ladder_top_cell.mid_left.x, ladder_top_cell.mid_left.y],
+            [ladder_bottom_cell.mid_left.x, ladder_bottom_cell.mid_left.y]
+        ];
+        
+        ladder_line2_pt = [
+            [ladder_top_cell.mid_right.x, ladder_top_cell.mid_right.y],
+            [ladder_bottom_cell.mid_right.x, ladder_bottom_cell.mid_right.y]
+        ];
+
+        pt1 = intersect_point(horizontal_point1, horizontal_point2, ladder_line1_pt[0], ladder_line1_pt[1]);
+        pt2 = intersect_point(horizontal_point1, horizontal_point2, ladder_line2_pt[0], ladder_line2_pt[1]);
+
+
+        stroke([ladder.color.red, ladder.color.green, ladder.color.blue])
+        line(pt1[0], pt1[1], 
+            pt2[0], pt2[1]);
+
+
+    }
+
 }
