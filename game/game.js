@@ -132,7 +132,7 @@ function genSnakes(){
             tail = getBlockByID(h-t);
         }
         else{
-            tail = getBlockByID(Math.round(random(2,6)));
+            tail = getBlockByID(Math.round(random(2,5)));
         }
         // connect head to tail
 
@@ -151,17 +151,39 @@ function genSnakes(){
 function genLadders(){
     for (let i = 0; i < 5; i++){
         // generate head location
-        let t = Math.round(random(20, 99));
-        let top = getBlockByID(t);
+        let check = false;
+        let top;
+        let t;
+        while (!check){
+            t = Math.round(random(20, 99));
+            check = true;
+            for(snk of snakes){
+                if(snk.head.id == t || snk.tail.id == t){
+                    check = false;
+                }
+            }
+            if (check)
+                top = getBlockByID(t);
+        }
         // generate tail location
-        let b = Math.round(random(25, 50));
+        let b; 
         let bottom;
-        if (t - b > 1){
-            bottom = getBlockByID(t-b);
+        check = false;
+        while (!check){
+            check = true;
+            b = Math.round(random(25, 50));
+            for (snk of snakes){
+                if (snk.head.id == t - b || snk.tail.id == t - b)
+                    check = false
+            }
+            if (t - b > 1 && check){
+                bottom = getBlockByID(t-b);
+            }
+            else if (check){
+                bottom = getBlockByID(Math.round(random(6,10)));
+            }
         }
-        else{
-            bottom = getBlockByID(Math.round(random(2,6)));
-        }
+
         // connect head to tail
 
         // color
@@ -169,6 +191,7 @@ function genLadders(){
         for(let i = 0; i < 3; i++){
             color.push(Math.round(random(0,255)));
         }
+
         //add to snakes
         let ldr = new ladder(top, 0, bottom, new rgb(color[0], color[1], color[2]));
         ladders.push(ldr);
@@ -189,7 +212,7 @@ function drawBoard(){
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         strokeWeight(4);
-        rect(x - (i * cutX), y - (j * cutY), cutX, cutY);
+        rect(i * cutX, j * cutY, cutX, cutY);
       }
     }
   }
