@@ -56,6 +56,8 @@ let board = [];
 let snakes = [];
 // array of ladders
 let ladders = [];
+// set of endpoints of ladders and snakes to prevent duplicates
+let endpoints = new Set();
 // boundaries of board once more things are added
 let boardBounds = {}
 
@@ -125,14 +127,31 @@ function genSnakes(){
         // generate head location
         let h = Math.round(random(20, 99));
         let head = getBlockByID(h);
+        endpoints.add(head);
+        while(endpoints.size < 1 + i * 2){
+            h -= 1;
+            head = getBlockByID(h);
+            endpoints.add(head);
+        }
         // generate tail location
         let t = Math.round(random(25, 50));
         let tail;
-        if (h - t > 1){
+        if (h - t > 2){
             tail = getBlockByID(h-t);
+            endpoints.add(tail);
+            while(endpoints.size < 2 + i * 2){
+                t -= 1;
+                tail = getBlockByID(h - t);
+                endpoints.add(tail);
+            }
         }
         else{
             tail = getBlockByID(Math.round(random(2,5)));
+            endpoints.add(tail);
+            while(endpoints.size < 2 + i * 2){
+                tail = getBlockByID(Math.round(random(2, 5)));
+                endpoints.add(tail);
+            }
         }
         // connect head to tail
 
@@ -151,39 +170,38 @@ function genSnakes(){
 function genLadders(){
     for (let i = 0; i < 5; i++){
         // generate head location
-        let check = false;
         let top;
         let t;
-        while (!check){
-            t = Math.round(random(20, 99));
-            check = true;
-            for(snk of snakes){
-                if(snk.head.id == t || snk.tail.id == t){
-                    check = false;
-                }
-            }
-            if (check)
-                top = getBlockByID(t);
+        t = Math.round(random(20, 99));
+        top = getBlockByID(t);
+        endpoints.add(top);
+        while(endpoints.size < 11 + i * 2){
+            t -= 1;
+            top = getBlockByID(t);
+            endpoints.add(top);
         }
+        console.log(endpoints.size);
         // generate tail location
         let b; 
         let bottom;
-        check = false;
-        while (!check){
-            check = true;
-            b = Math.round(random(25, 50));
-            for (snk of snakes){
-                if (snk.head.id == t - b || snk.tail.id == t - b)
-                    check = false
-            }
-            if (t - b > 1 && check){
-                bottom = getBlockByID(t-b);
-            }
-            else if (check){
-                bottom = getBlockByID(Math.round(random(6,10)));
+        b = Math.round(random(25, 50));
+        if (t - b > 6){
+            bottom = getBlockByID(t - b);
+            endpoints.add(bottom);
+            while (endpoints.size < 12 + i * 2){
+                b -= 1;
+                bottom = getBlockByID(t - b);
+                endpoints.add(bottom);
             }
         }
-
+        else{
+            bottom = getBlockByID(Math.round(random(6, 10)));
+            endpoints.add(bottom);
+            while(endpoints.size < 12 + i * 2){
+                bottom = getBlockByID(Math.round(random(6, 10)));
+                endpoints.add(bottom);
+            }
+        }
         // connect head to tail
 
         // color
