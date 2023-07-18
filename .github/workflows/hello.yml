@@ -1,0 +1,16 @@
+name: Say hello
+
+on:
+  #push:
+  #  branches: [ 'main' ]
+  workflow_dispatch:
+  
+jobs: 
+  say_hello:  
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get deployment files
+        uses: actions/checkout@v2
+      - name: Run some example commands
+        run: |
+          echo Hello!
