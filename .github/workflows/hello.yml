@@ -15,7 +15,7 @@ jobs:
         run: |
           echo $ echo Hello!
           echo Hello!
-          echo $ echo Hi!
-          echo Hi!
-          echo $ echo Bye!
-          echo Bye!
+          echo $ pwd
+          pwd
+          echo $ ls -la
+          ls -la
