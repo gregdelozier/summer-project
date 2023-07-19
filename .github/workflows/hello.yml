@@ -19,3 +19,7 @@ jobs:
           pwd
           echo $ ls -la
           ls -la
+          echo $ python --version
+          python --version
+          echo $ node --version
+          node --version
