@@ -14,3 +14,5 @@ jobs:
       - name: Run some example commands
         run: |
           echo Hello!
+          echo Hi!
+          echo Bye!
