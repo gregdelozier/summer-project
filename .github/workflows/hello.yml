@@ -27,3 +27,7 @@ jobs:
         run: |
           echo $ python hello.py
           python hello.py
+      - name: Test hello.js
+        run: |
+          echo $ node hello.js
+          node hello.js
