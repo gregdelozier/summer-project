@@ -23,3 +23,7 @@ jobs:
           python --version
           echo $ node --version
           node --version
+      - name: Run some example commands
+        run: |
+          echo $ python hello.py
+          python hello.py
