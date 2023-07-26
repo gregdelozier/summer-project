@@ -268,7 +268,16 @@ async function startPlay()
 }
 
 function movePlayer(currentPlayer, diceValue) {
-	//to be implemented next
+	let playerPosition = currentPlayer.playerPosition;
+	playerPosition = playerPosition + diceValue;
+	if (playerPosition > 100) {
+		playerPosition = currentPlayer.playerPosition;
+	}
+	else {
+		movePlayerOnBoard(currentPlayer, diceValue);
+		checkIfPlayerhasWonAndUpdate(currentPlayer);
+	}
+	//document.getElementById(currentPlayer.id).text = currentPlayer.playerPosition;
 }
 
 function checkIfPlayerhasWonAndUpdate(currentPlayer) {
@@ -276,7 +285,13 @@ function checkIfPlayerhasWonAndUpdate(currentPlayer) {
 }
 
 function movePlayerOnBoard(currentPlayer, diceValue) {
-	//to be implemented next
+	for (let i = 0; i < diceValue; i++) {
+		currentPlayer.playerPosition++;
+		//MovePlayer asynchronously with delay on board
+	}
+	currentPlayer.playerPosition = checkIfPlayersPositionHasSnakeHeadAndGetNewPosition(currentPlayer.playerPosition);
+	currentPlayer.playerPosition = checkIfPlayersPositionHasLadderBottomAndGetNewPosition(currentPlayer.playerPosition);
+	//MovePlayer asynchronously with delay on board
 }
 
 function checkIfPlayersPositionHasLadderBottomAndGetNewPosition(playerPosition) {
