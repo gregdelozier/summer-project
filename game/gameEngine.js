@@ -228,3 +228,73 @@ function drawNumbers(){
 }
   
 
+var currentPlayerIndex = 0;
+let players = [];
+function setPlayers() {
+    players = [{
+        id: "player1",
+        name: "p1", //player1Name,
+        playerPosition: 0,
+        hasWon: false
+    }, {
+        id: "player2",
+        name: "p2", //player2Name,
+        playerPosition: 0,
+        hasWon: false
+    }];
+}
+
+
+async function startPlay()
+{
+    setPlayers();
+	let currentPlayerIndex = 0;
+	while(!isGameOver()) {
+		let diceValue = await rollDieAndGetValue();
+		document.getElementById("die_Value").text = diceValue;
+		let currentPlayer = players[currentPlayerIndex];
+		movePlayer(currentPlayer, diceValue);
+		currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
+	}
+	
+	let winningPlayer = getWinningPlayer();
+	
+	let message = " Congratulations, " + winningPlayer.name + " won the game!";
+    if (confirm("Game Over!\n" + message)) {
+        window.location.reload(true);
+    } else {
+        window.location.reload(true);
+    }
+}
+
+function movePlayer(currentPlayer, diceValue) {
+	//to be implemented next
+}
+
+function checkIfPlayerhasWonAndUpdate(currentPlayer) {
+	//to be implemented next
+}
+
+function movePlayerOnBoard(currentPlayer, diceValue) {
+	//to be implemented next
+}
+
+function checkIfPlayersPositionHasLadderBottomAndGetNewPosition(playerPosition) {
+	//to be implemented next
+}
+
+function checkIfPlayersPositionHasSnakeHeadAndGetNewPosition(playerPosition) {
+	//to be implemented next
+}
+
+async function rollDieAndGetValue() {
+	//to be implemented next
+}
+
+function getWinningPlayer() {
+	//to be implemented next
+}
+	
+function isGameOver() {
+	//to be implemented next
+}
