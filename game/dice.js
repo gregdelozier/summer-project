@@ -70,8 +70,8 @@ function randomizeDice(diceContainer) {
 const diceContainer = document.querySelector(".dice-container");
 const btnRollDice = document.querySelector(".btn-roll-dice");
 
+// document.getElementById("ran").innerHTML = randomizeDice(diceContainer);
 
-document.getElementById("ran").innerHTML = randomizeDice(diceContainer);
 
 btnRollDice.addEventListener("click", () => {
 	const interval = setInterval(() => {

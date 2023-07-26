@@ -47,6 +47,14 @@ class rgb{
     }
 }
 
+class player{
+    constructor(id, name, position) {
+        this.id = id;
+        this.name = name;
+        this.position = position;
+    }
+}
+
 //--------------------------------------------------------------------------
 // Logical Glogals
 
@@ -60,6 +68,9 @@ let ladders = [];
 let endpoints = new Set();
 // boundaries of board once more things are added
 let boardBounds = {}
+
+
+
 
 //----------------------------------------------------------------------------
 // Engine Functions
@@ -230,19 +241,7 @@ function drawNumbers(){
 
 var currentPlayerIndex = 0;
 let players = [];
-function setPlayers() {
-    players = [{
-        id: "player1",
-        name: "p1", //player1Name,
-        playerPosition: 0,
-        hasWon: false
-    }, {
-        id: "player2",
-        name: "p2", //player2Name,
-        playerPosition: 0,
-        hasWon: false
-    }];
-}
+let playerNamesEntered = false;
 
 
 async function startPlay()
@@ -250,11 +249,11 @@ async function startPlay()
     setPlayers();
 	let currentPlayerIndex = 0;
 	while(!isGameOver()) {
-		let diceValue = await rollDieAndGetValue();
-		document.getElementById("die_Value").text = diceValue;
-		let currentPlayer = players[currentPlayerIndex];
-		movePlayer(currentPlayer, diceValue);
-		currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
+		// let diceValue = await rollDieAndGetValue();
+		// document.getElementById("die_Value").text = diceValue;
+		// let currentPlayer = players[currentPlayerIndex];
+		// movePlayer(currentPlayer, diceValue);
+		// currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
 	}
 	
 	let winningPlayer = getWinningPlayer();
