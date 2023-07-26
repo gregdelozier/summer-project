@@ -247,31 +247,25 @@ let playerNamesEntered = false;
 
 async function startPlay()
 {
-        let currentPlayerIndex = 0;
-        while(!isGameOver()) {
-            let diceValue = await rollDieAndGetValue();
-            document.getElementById("ran").text = diceValue;
-            let currentPlayer = players[currentPlayerIndex];
-            if(currentPlayerIndex == 0) {
-                oldP1Position = currentPlayer.playerPosition;
-            }
-            
-            if(currentPlayerIndex == 1) {
-                oldP2Position = currentPlayer.playerPosition;
-            }
-
-            movePlayer(currentPlayer, diceValue);
-            currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
+	let currentPlayerIndex = 0;
+	while(!isGameOver()) {
+		let diceValue = await rollDieAndGetValue();
+        randomizeDice(diceValue);
+		document.getElementById("ran").text = diceValue;
+		let currentPlayer = players[currentPlayerIndex];
+        if(currentPlayerIndex == 0) {
+            oldP1Position = currentPlayer.playerPosition;
         }
+    }
         
-        let winningPlayer = getWinningPlayer();
-        
-        let message = " Congratulations, " + winningPlayer.name + " won the game!";
-        if (confirm("Game Over!\n" + message)) {
-            window.location.reload(true);
-        } else {
-            window.location.reload(true);
-        }
+    let winningPlayer = getWinningPlayer();
+    
+    let message = " Congratulations, " + winningPlayer.name + " won the game!";
+    if (confirm("Game Over!\n" + message)) {
+        window.location.reload(true);
+    } else {
+        window.location.reload(true);
+    }
 }
 
 function movePlayer(currentPlayer, diceValue) {

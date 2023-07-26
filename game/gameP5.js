@@ -13,7 +13,7 @@ function setup() {
 }
 
 function drawAnimations() {
-    createCanvas(750, 750); 
+    createCanvas(500, 500); 
     // initialize board logically
     genBoard();
     // initialize locations of snakes
@@ -384,15 +384,15 @@ function drawSingleSnake(snake) {
     first_anchor = {
         // 'x': (tail_coords.x - head_1_coords.x) * 1 / 4  + head_tail_per_vector.x * 3,
         // 'y': (tail_coords.y - head_1_coords.y) * 1 / 4  + head_tail_per_vector.y * 3
-        'x': (750 ) / 2, 'y' : (750 ) / 2
+        'x': (width) / 2, 'y' : (height) / 2
     }
 
     second_anchor = {
         // 'x': (tail_coords.x - head_1_coords.x) * 3 / 4 - head_tail_per_vector.x * 3,
         // 'y': (tail_coords.y - head_1_coords.y) * 3 / 4 - head_tail_per_vector.y * 3,
-        'x': (750  + 10) / 2, 'y': (750 + 10) / 2
+        'x': (width  + 10) / 2, 'y': (height + 10) / 2
     }
-    strokeWeight(15);
+    strokeWeight(10);
     bezier(head_1_coords.x, head_1_coords.y, first_anchor.x, first_anchor.y, second_anchor.x, second_anchor.y, tail_coords.x,  tail_coords.y);
     // bezier(head_2_coords.x, head_2_coords.y, first_anchor.x + 10, first_anchor.y, second_anchor.x, second_anchor.y, tail_coords.x,  tail_coords.y);
 
