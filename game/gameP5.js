@@ -3,9 +3,9 @@ function setup() {
     // initialize board logically
     genBoard();
     // initialize locations of snakes
-    genSnakes();
+    // genSnakes();
     // initialize locations of ladders
-    genLadders();
+    // genLadders();
 }
 
 function draw() {
