@@ -1,24 +1,13 @@
 function setup() {
-    numberOfPlayers = createInput();
-    numberOfPlayers.position(20, 65);
-    playersHeading = createElement('h2', 'Enter number of players');
-    playersHeading.position(20, 5);
-    button = createButton('submit');
-    button.position(numberOfPlayers.x + numberOfPlayers.width, 65);
-    button.mousePressed(getPlayerNames);
-    textAlign(CENTER);
-    textSize(50);
-}
-
-function getPlayerNames() {
-  playersHeading.html('Enter player names');
-  const playerCount = numberOfPlayers.value();
-  numberOfPlayers.remove();
+  playersHeading = createElement('h2', 'Enter player names');
+  playersHeading.position(20, 5);
+  const playerCount = 2
   playerNames = []
   for(let i=0; i<parseInt(playerCount); i++) {
     playerNames[i] = createInput();
     playerNames[i].position(40, 100 + (i*40));
   }
+  button = createButton('submit');
   button.position(40, (parseInt(playerCount) * 100));
   button.mousePressed(drawAnimations);
 }
@@ -34,8 +23,9 @@ function drawAnimations() {
     playerNamesEntered = true;
     playersHeading.remove();
     button.remove();
+    startPlay();
     for(i=0; i< playerNames.length; i++) {
-        players.push(new player(i+1, playerNames[i].value(), 0));
+        players.push(new player(i+1, playerNames[i].value(), 1, false));
         playerNames[i].remove();
     }
     displayPlayerNames();
@@ -59,7 +49,7 @@ function displayPlayerNames() {
 }
 
 function draw() {
-  if(playerNamesEntered > 0) {
+  if(playerNamesEntered) {
     background(220);
     // draw board visually
     drawBoard();
@@ -69,6 +59,7 @@ function draw() {
     drawSnakes();
     // draw ladders on board
     drawLadders();
+    drawPlayers();
   }
 }
 //----------------------------------------------------------------------------------------------
@@ -450,6 +441,3 @@ function drawPlayer2(pos){
     fill(0, 0, 255);
     star(pos.xpos, pos.ypos, 10, 20, 5);
 }
-
-
-startPlay();

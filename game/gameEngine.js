@@ -52,6 +52,7 @@ class player{
         this.id = id;
         this.name = name;
         this.playerPosition = position;
+        this.hasWon = position
     }
 }
 
@@ -246,7 +247,6 @@ let playerNamesEntered = false;
 
 async function startPlay()
 {
-    if(playerNamesEntered) {
         let currentPlayerIndex = 0;
         while(!isGameOver()) {
             let diceValue = await rollDieAndGetValue();
@@ -272,7 +272,6 @@ async function startPlay()
         } else {
             window.location.reload(true);
         }
-    }
 }
 
 function movePlayer(currentPlayer, diceValue) {
