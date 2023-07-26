@@ -84,6 +84,7 @@ function getBlockByID(i){
     }
 }
 
+<<<<<<< HEAD:game/game.js
 function setup() {
     numberOfPlayers = createInput();
     numberOfPlayers.position(20, 65);
@@ -150,6 +151,8 @@ function draw() {
     drawLadders();
   }
 }
+=======
+>>>>>>> main:game/gameEngine.js
 
 // maps a logical coordinate to its on board coordinate
 function mapCoordToNum(x, y){
@@ -177,35 +180,40 @@ function genBoard(){
     }
 }
 
+function rand(min, max){
+	return Math.random() * (max - min) + min;
+}
+
 // generates the heads, tails, and bodies of snakes
 function genSnakes(){
     for (let i = 0; i < 5; i++){
         // generate head location
-        let h = Math.round(random(20, 99));
-        let head = getBlockByID(h);
-        endpoints.add(head);
+        let h = Math.round(rand(20, 99));
+        // let head = getBlockByID(h);
+        endpoints.add(h);
         while(endpoints.size < 1 + i * 2){
             h -= 1;
-            head = getBlockByID(h);
-            endpoints.add(head);
+            // head = getBlockByID(h);
+            endpoints.add(h);
         }
         // generate tail location
-        let t = Math.round(random(25, 50));
+        let t = Math.round(rand(25, 50));
         let tail;
         if (h - t > 2){
-            tail = getBlockByID(h-t);
+            // tail = getBlockByID(h-t);
+			tail = h - t;
             endpoints.add(tail);
             while(endpoints.size < 2 + i * 2){
                 t -= 1;
-                tail = getBlockByID(h - t);
+                tail = h - t; //getBlockByID(h - t);
                 endpoints.add(tail);
             }
         }
         else{
-            tail = getBlockByID(Math.round(random(2,5)));
+            tail = (Math.round(rand(2,5))); //getBlockByID(Math.round(random(2,5)));
             endpoints.add(tail);
             while(endpoints.size < 2 + i * 2){
-                tail = getBlockByID(Math.round(random(2, 5)));
+                tail = Math.round(rand(2,5)); //getBlockByID(Math.round(random(2, 5)));
                 endpoints.add(tail);
             }
         }
@@ -214,10 +222,10 @@ function genSnakes(){
         // color
         let color = [];
         for(let i = 0; i < 3; i++){
-            color.push(Math.round(random(0,255)));
+            color.push(Math.round(rand(0,255)));
         }
         //add to snakes
-        let snk = new snake(head, 0, tail, new rgb(color[0], color[1], color[2]));
+        let snk = new snake(h, 0, tail, new rgb(color[0], color[1], color[2]));
         snakes.push(snk);
     }
 }
@@ -228,33 +236,32 @@ function genLadders(){
         // generate head location
         let top;
         let t;
-        t = Math.round(random(20, 99));
-        top = getBlockByID(t);
-        endpoints.add(top);
+        t = Math.round(rand(20, 99));
+        //top = getBlockByID(t);
+        endpoints.add(t);
         while(endpoints.size < 11 + i * 2){
             t -= 1;
-            top = getBlockByID(t);
-            endpoints.add(top);
+            //top = getBlockByID(t);
+            endpoints.add(t);
         }
-        console.log(endpoints.size);
         // generate tail location
         let b; 
         let bottom;
-        b = Math.round(random(25, 50));
+        b = Math.round(rand(25, 50));
         if (t - b > 6){
-            bottom = getBlockByID(t - b);
+            bottom = t - b; // getBlockByID(t - b);
             endpoints.add(bottom);
             while (endpoints.size < 12 + i * 2){
                 b -= 1;
-                bottom = getBlockByID(t - b);
+                bottom = t - b; //getBlockByID(t - b);
                 endpoints.add(bottom);
             }
         }
         else{
-            bottom = getBlockByID(Math.round(random(6, 10)));
+            bottom = (Math.round(rand(6, 10)));
             endpoints.add(bottom);
             while(endpoints.size < 12 + i * 2){
-                bottom = getBlockByID(Math.round(random(6, 10)));
+                bottom = (Math.round(rand(6, 10)));
                 endpoints.add(bottom);
             }
         }
@@ -263,11 +270,11 @@ function genLadders(){
         // color
         let color = [];
         for(let i = 0; i < 3; i++){
-            color.push(Math.round(random(0,255)));
+            color.push(Math.round(rand(0,255)));
         }
 
         //add to snakes
-        let ldr = new ladder(top, 0, bottom, new rgb(color[0], color[1], color[2]));
+        let ldr = new ladder(t, 0, bottom, new rgb(color[0], color[1], color[2]));
         ladders.push(ldr);
     }
 }
@@ -300,20 +307,112 @@ function drawNumbers(){
     }
 }
   
-// draws the snakes
-function drawSnakes(){
-    for(snk of snakes){
-        fill(snk.color.red, snk.color.green, snk.color.blue);
-        circle(snk.head.xpos, snk.head.ypos, 20);
-        circle(snk.tail.xpos, snk.tail.ypos, 20);
+
+var currentPlayerIndex = 0;
+let players = [];
+function setPlayers() {
+    players = [{
+        id: "player1",
+        name: "p1", //player1Name,
+        playerPosition: 0,
+        hasWon: false
+    }, {
+        id: "player2",
+        name: "p2", //player2Name,
+        playerPosition: 0,
+        hasWon: false
+    }];
+}
+
+
+async function startPlay()
+{
+    setPlayers();
+	let currentPlayerIndex = 0;
+	while(!isGameOver()) {
+		let diceValue = await rollDieAndGetValue();
+		document.getElementById("die_Value").text = diceValue;
+		let currentPlayer = players[currentPlayerIndex];
+		movePlayer(currentPlayer, diceValue);
+		currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
+	}
+	
+	let winningPlayer = getWinningPlayer();
+	
+	let message = " Congratulations, " + winningPlayer.name + " won the game!";
+    if (confirm("Game Over!\n" + message)) {
+        window.location.reload(true);
+    } else {
+        window.location.reload(true);
     }
 }
 
-// draws the ladders
-function drawLadders(){
-    for(ldr of ladders){
-        fill(ldr.color.red, ldr.color.green, ldr.color.blue);
-        rect(ldr.top.xpos, ldr.top.ypos, 20);
-        rect(ldr.bottom.xpos, ldr.bottom.ypos, 20);
-    }
+function movePlayer(currentPlayer, diceValue) {
+	let playerPosition = currentPlayer.playerPosition;
+	playerPosition = playerPosition + diceValue;
+	if (playerPosition > 100) {
+		playerPosition = currentPlayer.playerPosition;
+	}
+	else {
+		movePlayerOnBoard(currentPlayer, diceValue);
+		checkIfPlayerhasWonAndUpdate(currentPlayer);
+	}
+}
+
+function checkIfPlayerhasWonAndUpdate(currentPlayer) {
+	if (currentPlayer.playerPosition === 100) {
+		currentPlayer.hasWon = true;
+	}
+}
+
+function movePlayerOnBoard(currentPlayer, diceValue) {
+	for (let i = 0; i < diceValue; i++) {
+		currentPlayer.playerPosition++;
+		//MovePlayer asynchronously with delay on board
+	}
+	currentPlayer.playerPosition = checkIfPlayersPositionHasSnakeHeadAndGetNewPosition(currentPlayer.playerPosition);
+	currentPlayer.playerPosition = checkIfPlayersPositionHasLadderBottomAndGetNewPosition(currentPlayer.playerPosition);
+	//MovePlayer asynchronously with delay on board
+}
+
+function checkIfPlayersPositionHasLadderBottomAndGetNewPosition(playerPosition) {
+	for (let i = 0; i < ladders.length; i++) {
+		if (ladders[i].bottom == playerPosition) {
+			playerPosition = ladders[i].top;
+		}
+	}
+	
+	return playerPosition;
+}
+
+function checkIfPlayersPositionHasSnakeHeadAndGetNewPosition(playerPosition) {
+	for (let i = 0; i < snakes.length; i++) {
+		if (snakes[i].head == playerPosition) {
+			playerPosition = snakes[i].tail;
+		}
+	}
+	
+	return playerPosition;
+}
+
+async function rollDieAndGetValue() {
+	//to be implemented next
+}
+
+function getWinningPlayer() {
+	for (let i = 0; i < players.length; i++) {
+		if (players[i].hasWon) {
+			return players[i];
+		}
+	}
+}
+	
+function isGameOver() {
+	for (let i = 0; i < players.length; i++) {
+		if (players[i].hasWon) {
+			return true;
+		}
+	}
+	
+	return false;
 }
