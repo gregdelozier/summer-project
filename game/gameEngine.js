@@ -73,27 +73,6 @@ function getBlockByID(i){
     }
 }
 
-function setup() {
-    createCanvas(750, 750); 
-    // initialize board logically
-    genBoard();
-    // initialize locations of snakes
-    genSnakes();
-    // initialize locations of ladders
-    genLadders();
-}
-
-function draw() {
-  background(220);
-  // draw board visually
-  drawBoard();
-  // draw numbers on board
-  drawNumbers();
-  // draw snakes on board
-  drawSnakes();
-  // draw ladders on board
-  drawLadders();
-}
 
 // maps a logical coordinate to its on board coordinate
 function mapCoordToNum(x, y){
@@ -121,35 +100,40 @@ function genBoard(){
     }
 }
 
+function rand(min, max){
+	return Math.random() * (max - min) + min;
+}
+
 // generates the heads, tails, and bodies of snakes
 function genSnakes(){
     for (let i = 0; i < 5; i++){
         // generate head location
-        let h = Math.round(random(20, 99));
-        let head = getBlockByID(h);
-        endpoints.add(head);
+        let h = Math.round(rand(20, 99));
+        // let head = getBlockByID(h);
+        endpoints.add(h);
         while(endpoints.size < 1 + i * 2){
             h -= 1;
-            head = getBlockByID(h);
-            endpoints.add(head);
+            // head = getBlockByID(h);
+            endpoints.add(h);
         }
         // generate tail location
-        let t = Math.round(random(25, 50));
+        let t = Math.round(rand(25, 50));
         let tail;
         if (h - t > 2){
-            tail = getBlockByID(h-t);
+            // tail = getBlockByID(h-t);
+			tail = h - t;
             endpoints.add(tail);
             while(endpoints.size < 2 + i * 2){
                 t -= 1;
-                tail = getBlockByID(h - t);
+                tail = h - t; //getBlockByID(h - t);
                 endpoints.add(tail);
             }
         }
         else{
-            tail = getBlockByID(Math.round(random(2,5)));
+            tail = (Math.round(rand(2,5))); //getBlockByID(Math.round(random(2,5)));
             endpoints.add(tail);
             while(endpoints.size < 2 + i * 2){
-                tail = getBlockByID(Math.round(random(2, 5)));
+                tail = Math.round(rand(2,5)); //getBlockByID(Math.round(random(2, 5)));
                 endpoints.add(tail);
             }
         }
@@ -158,10 +142,10 @@ function genSnakes(){
         // color
         let color = [];
         for(let i = 0; i < 3; i++){
-            color.push(Math.round(random(0,255)));
+            color.push(Math.round(rand(0,255)));
         }
         //add to snakes
-        let snk = new snake(head, 0, tail, new rgb(color[0], color[1], color[2]));
+        let snk = new snake(h, 0, tail, new rgb(color[0], color[1], color[2]));
         snakes.push(snk);
     }
 }
@@ -172,33 +156,32 @@ function genLadders(){
         // generate head location
         let top;
         let t;
-        t = Math.round(random(20, 99));
-        top = getBlockByID(t);
-        endpoints.add(top);
+        t = Math.round(rand(20, 99));
+        //top = getBlockByID(t);
+        endpoints.add(t);
         while(endpoints.size < 11 + i * 2){
             t -= 1;
-            top = getBlockByID(t);
-            endpoints.add(top);
+            //top = getBlockByID(t);
+            endpoints.add(t);
         }
-        console.log(endpoints.size);
         // generate tail location
         let b; 
         let bottom;
-        b = Math.round(random(25, 50));
+        b = Math.round(rand(25, 50));
         if (t - b > 6){
-            bottom = getBlockByID(t - b);
+            bottom = t - b; // getBlockByID(t - b);
             endpoints.add(bottom);
             while (endpoints.size < 12 + i * 2){
                 b -= 1;
-                bottom = getBlockByID(t - b);
+                bottom = t - b; //getBlockByID(t - b);
                 endpoints.add(bottom);
             }
         }
         else{
-            bottom = getBlockByID(Math.round(random(6, 10)));
+            bottom = (Math.round(rand(6, 10)));
             endpoints.add(bottom);
             while(endpoints.size < 12 + i * 2){
-                bottom = getBlockByID(Math.round(random(6, 10)));
+                bottom = (Math.round(rand(6, 10)));
                 endpoints.add(bottom);
             }
         }
@@ -207,11 +190,11 @@ function genLadders(){
         // color
         let color = [];
         for(let i = 0; i < 3; i++){
-            color.push(Math.round(random(0,255)));
+            color.push(Math.round(rand(0,255)));
         }
 
         //add to snakes
-        let ldr = new ladder(top, 0, bottom, new rgb(color[0], color[1], color[2]));
+        let ldr = new ladder(t, 0, bottom, new rgb(color[0], color[1], color[2]));
         ladders.push(ldr);
     }
 }
@@ -244,20 +227,4 @@ function drawNumbers(){
     }
 }
   
-// draws the snakes
-function drawSnakes(){
-    for(snk of snakes){
-        fill(snk.color.red, snk.color.green, snk.color.blue);
-        circle(snk.head.xpos, snk.head.ypos, 20);
-        circle(snk.tail.xpos, snk.tail.ypos, 20);
-    }
-}
 
-// draws the ladders
-function drawLadders(){
-    for(ldr of ladders){
-        fill(ldr.color.red, ldr.color.green, ldr.color.blue);
-        rect(ldr.top.xpos, ldr.top.ypos, 20);
-        rect(ldr.bottom.xpos, ldr.bottom.ypos, 20);
-    }
-}
