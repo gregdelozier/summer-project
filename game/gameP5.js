@@ -79,9 +79,10 @@ function mapCoordToNum(x, y){
   // draws the snakes
   function drawSnakes(){
       for(snk of snakes){
-          fill(snk.color.red, snk.color.green, snk.color.blue);
-          circle(getBlockByID(snk.head).xpos, getBlockByID(snk.head).ypos, 20);
-          circle(getBlockByID(snk.tail).xpos, getBlockByID(snk.tail).ypos, 20);
+        //   fill(snk.color.red, snk.color.green, snk.color.blue);
+        //   circle(getBlockByID(snk.head).xpos, getBlockByID(snk.head).ypos, 20);
+        //   circle(getBlockByID(snk.tail).xpos, getBlockByID(snk.tail).ypos, 20);
+        drawSingleSnake(snk);
       }
   }
   
@@ -192,7 +193,7 @@ function mapCoordToNum(x, y){
         }
     
     }
-    
+    strokeWeight(2);
     stroke([ladder.color.red, ladder.color.green, ladder.color.blue])
     
     line(ladder_top_cell.mid_left.x, ladder_top_cell.mid_left.y, 
@@ -232,4 +233,125 @@ function mapCoordToNum(x, y){
     }
   
   }
+
+
+  
+//draws a single snake
+function drawSingleSnake(snake) {
+    // Four corners of the ladder's top
+    let snake_head_cell = {
+        'row': getBlockByID(snake.head).y_coord,
+        'col': getBlockByID(snake.head).x_coord,
+    
+        'upper_left': {
+            'x': getBlockByID(snake.head).xpos - width / 20,
+            'y': getBlockByID(snake.head).ypos - height / 20
+        },
+    
+        'upper_right': {
+            'x': getBlockByID(snake.head).xpos + width / 20,
+            'y': getBlockByID(snake.head).ypos - height / 20
+        },
+    
+        'lower_left': {
+            'x': getBlockByID(snake.head).xpos - width / 20,
+            'y': getBlockByID(snake.head).ypos + width / 20
+        },
+    
+        'lower_right': {
+            'x': getBlockByID(snake.head).xpos + width / 20,
+            'y': getBlockByID(snake.head).ypos + width / 20
+        },
+    
+        'mid_left': {
+            'x': getBlockByID(snake.head).xpos - width / 20,
+            'y': getBlockByID(snake.head).ypos
+        },
+    
+        'mid_right': {
+            'x': getBlockByID(snake.head).xpos + width / 20,
+            'y': getBlockByID(snake.head).ypos
+        }
+    }
+      
+    let snake_tail_cell = {
+        'row': getBlockByID(snake.tail).y_coord,
+        'col': getBlockByID(snake.tail).x_coord,
+    
+        'upper_left': {
+            'x': getBlockByID(snake.tail).xpos - width / 20,
+            'y': getBlockByID(snake.tail).ypos - height / 20
+        },
+    
+        'upper_right': {
+            'x': getBlockByID(snake.tail).xpos + width / 20,
+            'y': getBlockByID(snake.tail).ypos - height / 20
+        },
+    
+        'lower_left': {
+            'x': getBlockByID(snake.tail).xpos - width / 20,
+            'y': getBlockByID(snake.tail).ypos + width / 20
+        },
+    
+        'lower_right': {
+            'x': getBlockByID(snake.tail).xpos + width / 20,
+            'y': getBlockByID(snake.tail).ypos + width / 20
+        },
+    
+        'mid_left': {
+            'x': getBlockByID(snake.tail).xpos - width / 20,
+            'y': getBlockByID(snake.tail).ypos
+        },
+    
+        'mid_right': {
+            'x': getBlockByID(snake.tail).xpos + width / 20,
+            'y': getBlockByID(snake.tail).ypos
+        }
+    
+    }
+    noFill()
+    
+    stroke([snake.color.red, snake.color.green, snake.color.blue])
+    // Snake endpoints
+    // console.log((snake_tail_cell.mid_left.x + snake_tail_cell.mid_right.x) / 2)
+    head_1_coords = {
+        'x': (snake_head_cell.mid_left.x + snake_head_cell.mid_right.x) / 2,
+        'y': (snake_head_cell.mid_left.y + snake_head_cell.mid_right.y) / 2
+    }
+    head_2_coords = {
+        'x': snake_head_cell.mid_right.x - 10,
+        'y': snake_head_cell.mid_right.y
+    }
+
+    tail_coords = {
+        'x':  (snake_tail_cell.mid_left.x + snake_tail_cell.mid_right.x) / 2,
+        'y': (snake_tail_cell.mid_left.y + snake_tail_cell.mid_right.y) / 2
+    }
+    
+    head_tail_vector = {
+        'x': tail_coords.x - head_1_coords.x,
+        'y': tail_coords.y - head_1_coords.y
+    }
+
+    head_tail_per_vector = {
+        'x': -head_tail_vector.x,
+        'y': head_tail_vector.y
+    }
+
+    first_anchor = {
+        // 'x': (tail_coords.x - head_1_coords.x) * 1 / 4  + head_tail_per_vector.x * 3,
+        // 'y': (tail_coords.y - head_1_coords.y) * 1 / 4  + head_tail_per_vector.y * 3
+        'x': (750 ) / 2, 'y' : (750 ) / 2
+    }
+
+    second_anchor = {
+        // 'x': (tail_coords.x - head_1_coords.x) * 3 / 4 - head_tail_per_vector.x * 3,
+        // 'y': (tail_coords.y - head_1_coords.y) * 3 / 4 - head_tail_per_vector.y * 3,
+        'x': (750  + 10) / 2, 'y': (750 + 10) / 2
+    }
+    strokeWeight(15);
+    bezier(head_1_coords.x, head_1_coords.y, first_anchor.x, first_anchor.y, second_anchor.x, second_anchor.y, tail_coords.x,  tail_coords.y);
+    // bezier(head_2_coords.x, head_2_coords.y, first_anchor.x + 10, first_anchor.y, second_anchor.x, second_anchor.y, tail_coords.x,  tail_coords.y);
+
+}
   
