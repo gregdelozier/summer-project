@@ -13,6 +13,13 @@ class boardBlock{
     }
 }
 
+class player{
+    constructor(id, name, position) {
+        this.id = id;
+        this.name = name;
+        this.position = position;
+    }
+}
 // uses boardBlocks to represent head, tail
 // body is an array of boardBlocks
 // clr is an rgb color
@@ -56,10 +63,14 @@ let board = [];
 let snakes = [];
 // array of ladders
 let ladders = [];
+let players = [];
+
 // set of endpoints of ladders and snakes to prevent duplicates
 let endpoints = new Set();
 // boundaries of board once more things are added
 let boardBounds = {}
+
+let playerNamesEntered = false;
 
 //----------------------------------------------------------------------------
 // Engine Functions
@@ -74,25 +85,70 @@ function getBlockByID(i){
 }
 
 function setup() {
+    numberOfPlayers = createInput();
+    numberOfPlayers.position(20, 65);
+    playersHeading = createElement('h2', 'Enter number of players');
+    playersHeading.position(20, 5);
+    button = createButton('submit');
+    button.position(numberOfPlayers.x + numberOfPlayers.width, 65);
+    button.mousePressed(getPlayerNames);
+    textAlign(CENTER);
+    textSize(50);
+}
+
+function getPlayerNames() {
+  playersHeading.html('Enter player names');
+  const playerCount = numberOfPlayers.value();
+  numberOfPlayers.remove();
+  playerNames = []
+  for(let i=0; i<parseInt(playerCount); i++) {
+    playerNames[i] = createInput();
+    playerNames[i].position(40, 100 + (i*40));
+  }
+  button.position(40, (parseInt(playerCount) * 100));
+  button.mousePressed(drawAnimations);
+}
+
+function drawAnimations() {
     createCanvas(750, 750); 
     // initialize board logically
     genBoard();
     // initialize locations of snakes
     genSnakes();
     // initialize locations of ladders
-    genLadders();
+    genLadders(); 
+    playerNamesEntered = true;
+    playersHeading.remove();
+    button.remove();
+    for(i=0; i< playerNames.length; i++) {
+        players.push(new player(i+1, playerNames[i].value(), 0));
+        playerNames[i].remove();
+    }
+    displayPlayerNames();
+}
+
+function displayPlayerNames() {
+    playersHeading = createElement('h2', 'Names of players');
+    playersHeading.position(1000, 100);
+    playersList = []
+    for(i=0;i<players.length;i++){
+        playersList[i] = createElement('h3', players[i].name);
+        playersList[i].position(1000, ((i+1) * 50) + 120)
+    }
 }
 
 function draw() {
-  background(220);
-  // draw board visually
-  drawBoard();
-  // draw numbers on board
-  drawNumbers();
-  // draw snakes on board
-  drawSnakes();
-  // draw ladders on board
-  drawLadders();
+  if(playerNamesEntered > 0) {
+    background(220);
+    // draw board visually
+    drawBoard();
+    // draw numbers on board
+    drawNumbers();
+    // draw snakes on board
+    drawSnakes();
+    // draw ladders on board
+    drawLadders();
+  }
 }
 
 // maps a logical coordinate to its on board coordinate
