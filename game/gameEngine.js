@@ -277,11 +277,12 @@ function movePlayer(currentPlayer, diceValue) {
 		movePlayerOnBoard(currentPlayer, diceValue);
 		checkIfPlayerhasWonAndUpdate(currentPlayer);
 	}
-	//document.getElementById(currentPlayer.id).text = currentPlayer.playerPosition;
 }
 
 function checkIfPlayerhasWonAndUpdate(currentPlayer) {
-	//to be implemented next
+	if (currentPlayer.playerPosition === 100) {
+		currentPlayer.hasWon = true;
+	}
 }
 
 function movePlayerOnBoard(currentPlayer, diceValue) {
@@ -319,9 +320,19 @@ async function rollDieAndGetValue() {
 }
 
 function getWinningPlayer() {
-	//to be implemented next
+	for (let i = 0; i < players.length; i++) {
+		if (players[i].hasWon) {
+			return players[i];
+		}
+	}
 }
 	
 function isGameOver() {
-	//to be implemented next
+	for (let i = 0; i < players.length; i++) {
+		if (players[i].hasWon) {
+			return true;
+		}
+	}
+	
+	return false;
 }
