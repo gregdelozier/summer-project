@@ -295,11 +295,23 @@ function movePlayerOnBoard(currentPlayer, diceValue) {
 }
 
 function checkIfPlayersPositionHasLadderBottomAndGetNewPosition(playerPosition) {
-	//to be implemented next
+	for (let i = 0; i < ladders.length; i++) {
+		if (ladders[i].bottom == playerPosition) {
+			playerPosition = ladders[i].top;
+		}
+	}
+	
+	return playerPosition;
 }
 
 function checkIfPlayersPositionHasSnakeHeadAndGetNewPosition(playerPosition) {
-	//to be implemented next
+	for (let i = 0; i < snakes.length; i++) {
+		if (snakes[i].head == playerPosition) {
+			playerPosition = snakes[i].tail;
+		}
+	}
+	
+	return playerPosition;
 }
 
 async function rollDieAndGetValue() {
