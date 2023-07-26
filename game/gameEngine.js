@@ -61,6 +61,9 @@ let endpoints = new Set();
 // boundaries of board once more things are added
 let boardBounds = {}
 
+let oldP1Position = 1;
+let oldP2Position = 1;
+
 //----------------------------------------------------------------------------
 // Engine Functions
 
@@ -234,12 +237,12 @@ function setPlayers() {
     players = [{
         id: "player1",
         name: "p1", //player1Name,
-        playerPosition: 0,
+        playerPosition: 1,
         hasWon: false
     }, {
         id: "player2",
         name: "p2", //player2Name,
-        playerPosition: 0,
+        playerPosition: 1,
         hasWon: false
     }];
 }
@@ -253,6 +256,14 @@ async function startPlay()
 		let diceValue = await rollDieAndGetValue();
 		document.getElementById("die_Value").text = diceValue;
 		let currentPlayer = players[currentPlayerIndex];
+        if(currentPlayerIndex == 0) {
+            oldP1Position = currentPlayer.playerPosition;
+        }
+        
+        if(currentPlayerIndex == 1) {
+            oldP2Position = currentPlayer.playerPosition;
+        }
+
 		movePlayer(currentPlayer, diceValue);
 		currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
 	}
