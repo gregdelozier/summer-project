@@ -1,5 +1,5 @@
 function setup() {
-    createCanvas(750, 750); 
+    createCanvas(500, 500); 
     // initialize board logically
     genBoard();
     // initialize locations of snakes
