@@ -316,7 +316,11 @@ function checkIfPlayersPositionHasSnakeHeadAndGetNewPosition(playerPosition) {
 }
 
 async function rollDieAndGetValue() {
-	//to be implemented next
+    return new Promise(resolve => {
+        setTimeout(() => {
+          resolve((Math.floor(Math.random() * 6) + 1));
+        }, 2000);
+      });
 }
 
 function getWinningPlayer() {
