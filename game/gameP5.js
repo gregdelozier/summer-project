@@ -406,4 +406,50 @@ function drawSingleSnake(snake) {
     // bezier(head_2_coords.x, head_2_coords.y, first_anchor.x + 10, first_anchor.y, second_anchor.x, second_anchor.y, tail_coords.x,  tail_coords.y);
 
 }
+
+
   
+
+
+
+function star(x, y, radius1, radius2, npoints) {
+    let angle = TWO_PI / npoints;
+    let halfAngle = angle / 2.0;
+    beginShape();
+    for (let a = 0; a < TWO_PI; a += angle) {
+      let sx = x + cos(a) * radius2;
+      let sy = y + sin(a) * radius2;
+      vertex(sx, sy);
+      sx = x + cos(a + halfAngle) * radius1;
+      sy = y + sin(a + halfAngle) * radius1;
+      vertex(sx, sy);
+    }
+    endShape(CLOSE);
+}
+
+function drawPlayers(){
+    // console.log(players);
+    if(oldP1Position < players[0].playerPosition)
+        oldP1Position += 1;
+    if(oldP1Position > players[0].playerPosition)
+        oldP1Position -= 1;
+    drawPlayer1(getBlockByID(oldP1Position));
+    if(oldP2Position < players[1].playerPosition)
+        oldP2Position += 1;
+    if(oldP2Position > players[1].playerPosition)
+        oldP2Position -= 1;
+    drawPlayer2(getBlockByID(oldP2Position));
+}
+
+function drawPlayer1(pos){
+    fill(255, 0, 0);
+    star(pos.xpos, pos.ypos, 20, 10, 5);
+}
+
+function drawPlayer2(pos){
+    fill(0, 0, 255);
+    star(pos.xpos, pos.ypos, 10, 20, 5);
+}
+
+
+startPlay();

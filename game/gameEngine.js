@@ -69,8 +69,8 @@ let endpoints = new Set();
 // boundaries of board once more things are added
 let boardBounds = {}
 
-
-
+let oldP1Position = 1;
+let oldP2Position = 1;
 
 //----------------------------------------------------------------------------
 // Engine Functions
@@ -249,11 +249,19 @@ async function startPlay()
     setPlayers();
 	let currentPlayerIndex = 0;
 	while(!isGameOver()) {
-		// let diceValue = await rollDieAndGetValue();
-		// document.getElementById("die_Value").text = diceValue;
-		// let currentPlayer = players[currentPlayerIndex];
-		// movePlayer(currentPlayer, diceValue);
-		// currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
+		let diceValue = await rollDieAndGetValue();
+		document.getElementById("ran").text = diceValue;
+		let currentPlayer = players[currentPlayerIndex];
+        if(currentPlayerIndex == 0) {
+            oldP1Position = currentPlayer.playerPosition;
+        }
+        
+        if(currentPlayerIndex == 1) {
+            oldP2Position = currentPlayer.playerPosition;
+        }
+
+		movePlayer(currentPlayer, diceValue);
+		currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
 	}
 	
 	let winningPlayer = getWinningPlayer();
@@ -315,7 +323,11 @@ function checkIfPlayersPositionHasSnakeHeadAndGetNewPosition(playerPosition) {
 }
 
 async function rollDieAndGetValue() {
-	//to be implemented next
+    return new Promise(resolve => {
+        setTimeout(() => {
+          resolve((Math.floor(Math.random() * 6) + 1));
+        }, 2000);
+      });
 }
 
 function getWinningPlayer() {
