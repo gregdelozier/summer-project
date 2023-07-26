@@ -254,6 +254,7 @@ async function startPlay()
 	let currentPlayerIndex = 0;
 	while(!isGameOver()) {
 		let diceValue = await rollDieAndGetValue();
+        randomizeDice(diceValue);
 		document.getElementById("ran").text = diceValue;
 		let currentPlayer = players[currentPlayerIndex];
         if(currentPlayerIndex == 0) {

@@ -53,11 +53,11 @@ function createDice(number) {
 	return dice;
 }
 
-function randomizeDice(diceContainer) {
+function randomizeDice(random) {
+	const diceContainer = document.querySelector(".dice-container");
 	diceContainer.innerHTML = "";
 
 	
-		const random = Math.floor((Math.random() * 6) + 1);
 		const dice = createDice(random);
 
 		diceContainer.appendChild(dice);
@@ -67,16 +67,4 @@ function randomizeDice(diceContainer) {
 
 
 
-const diceContainer = document.querySelector(".dice-container");
-const btnRollDice = document.querySelector(".btn-roll-dice");
 
-
-document.getElementById("ran").innerHTML = randomizeDice(diceContainer);
-
-btnRollDice.addEventListener("click", () => {
-	const interval = setInterval(() => {
-		document.getElementById("ran").innerHTML =randomizeDice(diceContainer);
-	}, 50);
-
-	setTimeout(() => clearInterval(interval), 1000);
-});
