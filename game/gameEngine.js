@@ -251,8 +251,9 @@ async function startPlay()
 	let currentPlayerIndex = 0;
 	while(!isGameOver()) {
 		let diceValue = await rollDieAndGetValue();
-		document.getElementById("die_Value").text = diceValue;
 		let currentPlayer = players[currentPlayerIndex];
+        console.log("playerPosition: " + currentPlayer.playerPosition);
+        console.log("diceValue: " + diceValue);
 		movePlayer(currentPlayer, diceValue);
 		currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
 	}
@@ -319,7 +320,7 @@ async function rollDieAndGetValue() {
     return new Promise(resolve => {
         setTimeout(() => {
           resolve((Math.floor(Math.random() * 6) + 1));
-        }, 2000);
+        }, 200);
       });
 }
 
@@ -340,3 +341,5 @@ function isGameOver() {
 	
 	return false;
 }
+
+startPlay();
