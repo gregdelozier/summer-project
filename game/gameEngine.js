@@ -254,7 +254,7 @@ async function startPlay()
 	let currentPlayerIndex = 0;
 	while(!isGameOver()) {
 		let diceValue = await rollDieAndGetValue();
-		document.getElementById("die_Value").text = diceValue;
+		document.getElementById("ran").text = diceValue;
 		let currentPlayer = players[currentPlayerIndex];
         if(currentPlayerIndex == 0) {
             oldP1Position = currentPlayer.playerPosition;
