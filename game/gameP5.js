@@ -36,7 +36,7 @@ function displayPlayerNames() {
     playersHeading.position(1000, 100);
     playersList = []
     for(i=0;i<players.length;i++){
-        playersList[i] = createElement('h3', players[i].name);
+        playersList[i] = createElement('h3', `Player ${i+1} : `+players[i].name);
         playersList[i].position(1000, ((i+1) * 50) + 120)
     }
 }
