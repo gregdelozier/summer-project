@@ -247,14 +247,17 @@ function setPlayers() {
     }];
 }
 
+
 async function startPlay()
 {
+    setPlayers();
 	let currentPlayerIndex = 0;
 	while(!isGameOver()) {
-		let diceValue = await rollDieAndGetValue();
-        randomizeDice(diceValue);
-		document.getElementById("ran").text = diceValue;
 		let currentPlayer = players[currentPlayerIndex];
+		let diceValue = await rollDieAndGetValue();
+		document.getElementById("rolledValue").innerHTML =  "<b>" + diceValue +  "</b>";
+        randomizeDice(diceValue);
+        let waiting = await haultFlow();
         if(currentPlayerIndex == 0) {
             oldP1Position = currentPlayer.playerPosition;
         }
@@ -264,6 +267,7 @@ async function startPlay()
         }
 
 		movePlayer(currentPlayer, diceValue);
+        document.getElementById(currentPlayer.id + "_pos").innerHTML = "<b>" + currentPlayer.playerPosition + "</b>";
 		currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
 	}
 	
@@ -275,6 +279,15 @@ async function startPlay()
     } else {
         window.location.reload(true);
     }
+}
+
+
+async function haultFlow() {
+    return new Promise(resolve => {
+        setTimeout(() => {
+          resolve((true));
+        }, 1000);
+      });
 }
 
 function movePlayer(currentPlayer, diceValue) {
@@ -328,13 +341,9 @@ function checkIfPlayersPositionHasSnakeHeadAndGetNewPosition(playerPosition) {
 async function rollDieAndGetValue() {
     return new Promise(resolve => {
         setTimeout(() => {
-          resolve(dieValue());
-        }, 2000);
+          resolve((Math.floor(Math.random() * 6) + 1));
+        }, 1000);
       });
-}
-
-function dieValue(){
-    return (Math.floor(Math.random() * 6) + 1);
 }
 
 function getWinningPlayer() {
