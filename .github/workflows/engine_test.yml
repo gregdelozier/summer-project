@@ -1,0 +1,27 @@
+name: Test Game Engine
+
+on:
+  push:
+    branches: [ 'main' ]
+  workflow_dispatch:
+
+jobs:
+  test_engine_functions:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get deployment files
+      uses: actions/checkout@v2
+    - name: Check OS and node version
+      run: |
+        echo $ pwd
+        pwd
+        echo $ ls -la
+        ls -la
+        echo $ lsb_release -d
+        lsb_release -d
+        echo $ node --version
+        node --version
+    - name: Run tests for game engine
+      run: |
+        echo $ node tester.js
+        node tester.js

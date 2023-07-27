@@ -247,10 +247,8 @@ function setPlayers() {
     }];
 }
 
-
 async function startPlay()
 {
-    setPlayers();
 	let currentPlayerIndex = 0;
 	while(!isGameOver()) {
 		let diceValue = await rollDieAndGetValue();
@@ -330,9 +328,13 @@ function checkIfPlayersPositionHasSnakeHeadAndGetNewPosition(playerPosition) {
 async function rollDieAndGetValue() {
     return new Promise(resolve => {
         setTimeout(() => {
-          resolve((Math.floor(Math.random() * 6) + 1));
+          resolve(dieValue());
         }, 2000);
       });
+}
+
+function dieValue(){
+    return (Math.floor(Math.random() * 6) + 1);
 }
 
 function getWinningPlayer() {
@@ -352,3 +354,25 @@ function isGameOver() {
 	
 	return false;
 }
+//----------------------------------------------------------------------------------
+// Initialization Functions
+
+// initialize locations of snakes
+genSnakes();
+// initialize locations of ladders
+genLadders();
+// initialize player objects
+setPlayers();
+
+//----------------------------------------------------------------------------------
+// Testing Exports
+
+module.exports = {
+    players, 
+    movePlayer, 
+    snakes,
+    ladders,
+    getWinningPlayer,
+    checkIfPlayerhasWonAndUpdate,
+    dieValue
+};
