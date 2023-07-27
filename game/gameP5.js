@@ -29,13 +29,6 @@ function drawAnimations() {
         playerNames[i].remove();
     }
     displayPlayerNames();
-    const diceContainer = document.querySelector(".dice-container");
-    const btnRollDice = document.querySelector(".btn-roll-dice");
-
-    if(playerNamesEntered) {
-        document.getElementById("ran").innerHTML = randomizeDice(diceContainer);
-        btnRollDice.style.display = 'block';
-    }
 }
 
 function displayPlayerNames() {

@@ -48,11 +48,11 @@ class rgb{
 }
 
 class player{
-    constructor(id, name, position) {
+    constructor(id, name, position, hasWon) {
         this.id = id;
         this.name = name;
         this.playerPosition = position;
-        this.hasWon = position
+        this.hasWon = hasWon
     }
 }
 
@@ -256,11 +256,18 @@ async function startPlay()
         if(currentPlayerIndex == 0) {
             oldP1Position = currentPlayer.playerPosition;
         }
-    }
         
-    let winningPlayer = getWinningPlayer();
-    
-    let message = " Congratulations, " + winningPlayer.name + " won the game!";
+        if(currentPlayerIndex == 1) {
+            oldP2Position = currentPlayer.playerPosition;
+        }
+		movePlayer(currentPlayer, diceValue);
+		currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
+        console.log(currentPlayerIndex);
+	}
+	
+	let winningPlayer = getWinningPlayer();
+	
+	let message = " Congratulations, " + winningPlayer.name + " won the game!";
     if (confirm("Game Over!\n" + message)) {
         window.location.reload(true);
     } else {
