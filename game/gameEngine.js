@@ -244,6 +244,12 @@ var currentPlayerIndex = 0;
 let players = [];
 let playerNamesEntered = false;
 
+function playersInit(){
+    for (let i = 0; i < 2; i++){
+        players.push(new player (`player${i+1}`, `P${i+1}`, 1, false));
+    }
+}
+
 
 async function startPlay()
 {
@@ -369,6 +375,8 @@ function isGameOver() {
 genSnakes();
 // initialize locations of ladders
 genLadders();
+
+playersInit();
 
 //----------------------------------------------------------------------------------
 // Testing Exports

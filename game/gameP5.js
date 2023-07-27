@@ -24,7 +24,8 @@ function drawAnimations() {
     playersHeading.remove();
     button.remove();
     for(i=0; i< playerNames.length; i++) {
-        players.push(new player(`player${i+1}`, playerNames[i].value(), 1, false));
+        players[i].name = playerNames[i].value();
+        //players.push(new player(`player${i+1}`, playerNames[i].value(), 1, false));
         playerNames[i].remove();
     }
     document.getElementsByClassName("control-center")[0].style.display = "flex";
