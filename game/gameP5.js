@@ -1,25 +1,58 @@
 function setup() {
+  playersHeading = createElement('h2', 'Enter player names');
+  playersHeading.position(20, 5);
+  const playerCount = 2
+  playerNames = []
+  for(let i=0; i<parseInt(playerCount); i++) {
+    playerNames[i] = createInput();
+    playerNames[i].position(40, 100 + (i*40));
+  }
+  button = createButton('submit');
+  button.position(40, (parseInt(playerCount) * 100));
+  button.mousePressed(drawAnimations);
+}
+
+function drawAnimations() {
     createCanvas(500, 500); 
     // initialize board logically
     genBoard();
     // initialize locations of snakes
     // genSnakes();
     // initialize locations of ladders
-    // genLadders();
+    genLadders(); 
+    playerNamesEntered = true;
+    playersHeading.remove();
+    button.remove();
+    for(i=0; i< playerNames.length; i++) {
+        players[i].name = playerNames[i].value();
+        //players.push(new player(`player${i+1}`, playerNames[i].value(), 1, false));
+        playerNames[i].remove();
+    }
+    document.getElementsByClassName("control-center")[0].style.display = "flex";
+    displayPlayerNames();
+    startPlay();
+}
+
+function displayPlayerNames() {
+    document.getElementById("player1_name").innerText = players[0].name;
+    document.getElementById("player2_name").innerText = players[1].name;
+    document.getElementById("player1_pos").inputText = players[0].playerPosition;
+    document.getElementById("player2_pos").innerText = players[1].playerPosition;
 }
 
 function draw() {
-  background(220);
-  // draw board visually
-  drawBoard();
-  // draw numbers on board
-  drawNumbers();
-  // draw snakes on board
-  drawSnakes();
-  // draw ladders on board
-  drawLadders();
-
-  drawPlayers();
+  if(playerNamesEntered) {
+    background(220);
+    // draw board visually
+    drawBoard();
+    // draw numbers on board
+    drawNumbers();
+    // draw snakes on board
+    drawSnakes();
+    // draw ladders on board
+    drawLadders();
+    drawPlayers();
+  }
 }
 //----------------------------------------------------------------------------------------------
 // Board Generation
@@ -400,6 +433,3 @@ function drawPlayer2(pos){
     fill(0, 0, 255);
     star(pos.xpos, pos.ypos, 10, 20, 5);
 }
-
-
-startPlay();

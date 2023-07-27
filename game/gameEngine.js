@@ -47,6 +47,15 @@ class rgb{
     }
 }
 
+class player{
+    constructor(id, name, position, hasWon) {
+        this.id = id;
+        this.name = name;
+        this.playerPosition = position;
+        this.hasWon = hasWon
+    }
+}
+
 //--------------------------------------------------------------------------
 // Logical Glogals
 
@@ -233,27 +242,21 @@ function drawNumbers(){
 
 var currentPlayerIndex = 0;
 let players = [];
-function setPlayers() {
-    players = [{
-        id: "player1",
-        name: "p1", //player1Name,
-        playerPosition: 1,
-        hasWon: false
-    }, {
-        id: "player2",
-        name: "p2", //player2Name,
-        playerPosition: 1,
-        hasWon: false
-    }];
+let playerNamesEntered = false;
+
+function playersInit(){
+    for (let i = 0; i < 2; i++){
+        players.push(new player (`player${i+1}`, `P${i+1}`, 1, false));
+    }
 }
 
 
 async function startPlay()
 {
-    setPlayers();
 	let currentPlayerIndex = 0;
+    var currentPlayer;
 	while(!isGameOver()) {
-		let currentPlayer = players[currentPlayerIndex];
+		currentPlayer = players[currentPlayerIndex];
 		let diceValue = await rollDieAndGetValue();
 		document.getElementById("rolledValue").innerHTML =  "<b>" + diceValue +  "</b>";
         randomizeDice(diceValue);
@@ -265,10 +268,10 @@ async function startPlay()
         if(currentPlayerIndex == 1) {
             oldP2Position = currentPlayer.playerPosition;
         }
-
 		movePlayer(currentPlayer, diceValue);
         document.getElementById(currentPlayer.id + "_pos").innerHTML = "<b>" + currentPlayer.playerPosition + "</b>";
 		currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
+        console.log(currentPlayerIndex);
 	}
 	
 	let winningPlayer = getWinningPlayer();
@@ -372,8 +375,8 @@ function isGameOver() {
 genSnakes();
 // initialize locations of ladders
 genLadders();
-// initialize player objects
-setPlayers();
+
+playersInit();
 
 //----------------------------------------------------------------------------------
 // Testing Exports
