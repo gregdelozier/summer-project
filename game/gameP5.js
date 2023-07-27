@@ -33,11 +33,11 @@ function drawAnimations() {
 
 function displayPlayerNames() {
     playersHeading = createElement('h2', 'Names of players');
-    playersHeading.position(1000, 100);
+    playersHeading.position(550, 100);
     playersList = []
     for(i=0;i<players.length;i++){
         playersList[i] = createElement('h3', `Player ${i+1} : `+players[i].name);
-        playersList[i].position(1000, ((i+1) * 50) + 120)
+        playersList[i].position(550, ((i+1) * 50) + 120)
     }
 }
 
