@@ -5,15 +5,47 @@
     <script src="gameP5.js"></script>
     <link rel="stylesheet" href="dice.css">
     <script src="dice.js" defer></script>
+    <style>
+      .display-container {
+        float:left;
+        box-shadow: 1px 0px 1px 0px lightblue;
+        padding: 15px;
+        background-color: antiquewhite;
+        margin: 15px;
+      }
+      .dice-container {
+        float:left;
+        box-shadow: 1px 0px 1px 0px lightblue;
+        padding: 15px;
+        margin: 15px;
+        background-color: antiquewhite;
+      }
+      .current-player
+      {
+        background: 2px solid green;
+        box-shadow: 2px 0px 2px 0px white;
+        padding: 15px;
+      }
+    </style>
   </head>
   <body>
     <div style="float:left">
-    <main>
-    </main>
-  </div>
-  <div>
-    <div  style="float:left" class="dice-container" id="die"></div>
-      <p id="ran" > </p>
+      <main>
+      </main>
+    </div>
+    <div>
+      <div class="dice-container" id="die"></div>
+      <br/>
+    </div>
+    <br/></br></br>
+    <br/></br></br>
+    </br></br></br>
+    <div class="display-container">
+      <p>DIE VALUE#: <span id="rolledValue"></span></p>
+      <span id="player1_p">PLAYER#1 POSTION:&nbsp;&nbsp;<span id="player1_pos"></span></span>
+      <br/>
+      <br/>
+      <span id="player2_p">PLAYER#2 POSTION:&nbsp;&nbsp;<span id="player2_pos"></span></span>
     </div>
   </body>
 </html>
