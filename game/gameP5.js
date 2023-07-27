@@ -23,22 +23,20 @@ function drawAnimations() {
     playerNamesEntered = true;
     playersHeading.remove();
     button.remove();
-    startPlay();
     for(i=0; i< playerNames.length; i++) {
-        players.push(new player(i+1, playerNames[i].value(), 1, false));
+        players.push(new player(`player${i+1}`, playerNames[i].value(), 1, false));
         playerNames[i].remove();
     }
+    document.getElementsByClassName("control-center")[0].style.display = "flex";
     displayPlayerNames();
+    startPlay();
 }
 
 function displayPlayerNames() {
-    playersHeading = createElement('h2', 'Names of players');
-    playersHeading.position(550, 100);
-    playersList = []
-    for(i=0;i<players.length;i++){
-        playersList[i] = createElement('h3', `Player ${i+1} : `+players[i].name);
-        playersList[i].position(550, ((i+1) * 50) + 120)
-    }
+    document.getElementById("player1_name").innerText = players[0].name;
+    document.getElementById("player2_name").innerText = players[1].name;
+    document.getElementById("player1_pos").inputText = players[0].playerPosition;
+    document.getElementById("player2_pos").innerText = players[1].playerPosition;
 }
 
 function draw() {

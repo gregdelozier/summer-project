@@ -247,10 +247,10 @@ let playerNamesEntered = false;
 
 async function startPlay()
 {
-    setPlayers();
 	let currentPlayerIndex = 0;
+    var currentPlayer;
 	while(!isGameOver()) {
-		let currentPlayer = players[currentPlayerIndex];
+		currentPlayer = players[currentPlayerIndex];
 		let diceValue = await rollDieAndGetValue();
 		document.getElementById("rolledValue").innerHTML =  "<b>" + diceValue +  "</b>";
         randomizeDice(diceValue);
@@ -369,8 +369,6 @@ function isGameOver() {
 genSnakes();
 // initialize locations of ladders
 genLadders();
-// initialize player objects
-setPlayers();
 
 //----------------------------------------------------------------------------------
 // Testing Exports
