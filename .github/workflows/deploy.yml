@@ -17,7 +17,6 @@ jobs:
       with:
         key: ${{ secrets.ID_RSA_SNAKES }}
         name: id_rsa_snakes
-        known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
     - name: Check OS and node version
       run: |
@@ -27,4 +26,3 @@ jobs:
       run: |
         echo $ hi!
         ssh -i ~/.ssh/id_rsa_snakes -o LogLevel=ERROR -o UserKnownHostFile=/dev/null -o StrictHostKeyChecking=no snakesandladders@ssh.pythonanywhere.com ls -la
-         
