@@ -32,12 +32,21 @@ jobs:
         echo $ pwd
         pwd
 
-    - name: Run a command on the remote
+    - name: Deploy code to the remote
       run: |
         export TARGET=$USER@$HOST
         export RUN="ssh $SSH_OPTIONS $TARGET"
-        pwd
-        ls -la
-        echo "GHW=" $GITHUB_WORKSPACE
+        export COPY="scp $SSH_OPTIONS"
+
+        cd $GITHUB_WORKSPACE
+        tar cvf game.tar game
         echo $RUN 'mkdir -p /home/snakesandladders/sites/snakesandladders'
         $RUN 'mkdir -p /home/snakesandladders/sites/snakesandladders'
+        echo $COPY game.tar $TARGET:/home/snakesandladders
+        $COPY game.tar $TARGET:/home/snakesandladders
+        echo $RUN 'tar xvf game.tar'
+        $RUN 'tar xvf game.tar'
+        echo $RUN 'rm /home/snakesandladders/sites/snakesandladders/*'
+        $RUN 'rm /home/snakesandladders/sites/snakesandladders/*'
+        echo $RUN 'mv game/* /home/snakesandladders/sites/snakesandladders'
+        $RUN 'mv game/* /home/snakesandladders/sites/snakesandladders'
