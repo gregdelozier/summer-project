@@ -231,7 +231,7 @@ function drawBoard(){
   }
 
 // draws the correct numbers on the board tiles
-function drawNumbers(){
+function drawNumbers() {
     strokeWeight(0.5);
     fill(10);
     for(block of board){
@@ -239,25 +239,49 @@ function drawNumbers(){
     }
 }
   
-
 var currentPlayerIndex = 0;
 let players = [];
 let playerNamesEntered = false;
 
-function playersInit(){
+function playersInit() {
     for (let i = 0; i < 2; i++){
         players.push(new player (`player${i+1}`, `P${i+1}`, 1, false));
     }
 }
 
+const GameMode = 
+{
+    AUTOMATIC: 0,
+    SEMI_AUTOMATIC: 1,
+    MANUAL: 2,
+}
+var gameMode = GameMode.MANUAL;
+
+function waitForUserClick() {
+    return new Promise(resolve => {
+        const roll_die_button = document.getElementById('roll_die_button');
+        roll_die_button.classList.add('ative-button');
+        roll_die_button.addEventListener('click', resolve, { once: true });
+    });
+}
 
 async function startPlay()
 {
+    if (gameMode != GameMode.AUTOMATIC) {
+        document.getElementById('roll_die_button').style.display = 'block';
+    }
+
 	let currentPlayerIndex = 0;
     var currentPlayer;
 	while(!isGameOver()) {
 		currentPlayer = players[currentPlayerIndex];
-		let diceValue = await rollDieAndGetValue();
+		let diceValue = 0;
+        if ((gameMode == GameMode.SEMI_AUTOMATIC && currentPlayerIndex == 1) || gameMode == GameMode.MANUAL) {
+            await waitForUserClick();
+        }
+        const roll_die_button = document.getElementById('roll_die_button');
+        roll_die_button.classList.remove('ative-button');
+        diceValue = await rollDieAndGetValue();
 		document.getElementById("rolledValue").innerHTML =  "<b>" + diceValue +  "</b>";
         randomizeDice(diceValue);
         let waiting = await haultFlow();
