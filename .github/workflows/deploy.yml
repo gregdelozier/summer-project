@@ -36,6 +36,8 @@ jobs:
       run: |
         export TARGET=$USER@$HOST
         export RUN="ssh $SSH_OPTIONS $TARGET"
-        echo $ hi!
-        $RUN ls -la
-        $RUN 'cd ~/projects/summer-project; git pull'
+        pwd
+        ls -la
+        echo "GHW=" $GITHUB_WORKSPACE
+        echo $RUN 'mkdir -p /home/snakesandladders/sites/snakesandladders'
+        $RUN 'mkdir -p /home/snakesandladders/sites/snakesandladders'
