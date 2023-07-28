@@ -26,4 +26,4 @@ jobs:
     - name: Run a command on the remote
       run: |
         echo $ hi!
-        ssh -i ~/.ssh/id_rsa_snakes -o LogLevel=ERROR -o UserKnownHostFile=/dev/null -o StrictHostKeyChecking=no snakesandladders@ssh.pythonanywhere.com ls -la
+        ssh -i ~/.ssh/id_rsa_snakes -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no snakesandladders@ssh.pythonanywhere.com ls -la
