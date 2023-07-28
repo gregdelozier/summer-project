@@ -33,6 +33,32 @@
     .die-block {
       width: 100px;
     }
+
+    .animated-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .animated-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .animated-button:active {
+      transform: scale(0.9);
+      box-shadow: none;
+    }
+
+    .ative-button {
+      background-color: #4CAF50;
+    }
+
   </style>
 </head>
 
@@ -42,8 +68,9 @@
       <main>
       </main>
     </div>
-    <div class="control-center">
-      <div class="die-block">
+    <div style="float: right;" class="control-center">
+        <input type="button" id="roll_die_button" class="animated-button" value="ROLL DIE" style="display: none;"/>
+        <div class="die-block">
         <div class="dice-container" id="die"></div>
         <br />
       </div>
