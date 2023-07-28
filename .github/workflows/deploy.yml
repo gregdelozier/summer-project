@@ -17,6 +17,7 @@ jobs:
       with:
         key: ${{ secrets.ID_RSA_SNAKES }}
         name: id_rsa_snakes
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
     - name: Check OS and node version
       run: |
