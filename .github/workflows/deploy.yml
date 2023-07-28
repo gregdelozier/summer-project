@@ -1,0 +1,20 @@
+name: Deploy game to PA
+
+on:
+  # push:
+  #   branches: [ 'main' ]
+  workflow_dispatch:
+
+jobs:
+  deploy_game_to_pa:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get deployment files
+      uses: actions/checkout@v2
+    - name: Check OS and node version
+      run: |
+        echo $ pwd
+        pwd
+    - name: Run tests for game engine
+      run: |
+        echo $ hi!
