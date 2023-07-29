@@ -2,6 +2,8 @@
 
 <head>
   <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="gameEngine.js"></script>
   <script src="gameP5.js"></script>
   <link rel="stylesheet" href="dice.css">
@@ -30,6 +32,7 @@
       box-shadow: 2px 0px 2px 0px white;
       padding: 15px;
     }
+
     .die-block {
       width: 100px;
     }
@@ -59,18 +62,56 @@
       background-color: #4CAF50;
     }
 
+    .inputs-block {
+      gap: 20px;
+      padding: 20px;
+      background: antiquewhite;
+      border-radius: 15px;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .show {
+      display: block;
+    }
   </style>
 </head>
 
 <body>
   <div class="main">
+    <div id="player-inputs" class="align-items-center container d-flex flex-column h-100 justify-content-center player-inputs">
+      <div class="align-items-center d-flex flex-column justify-content-center inputs-block">
+        <h2 id="players-heading">Enter Game Mode</h2>
+        <div id="game-modes">
+          <div class="form-check">
+            <input type="radio" id="zero-player" name="gameMode" value="0" class="form-check-input">
+            <label class="form-check-label" for="zero-player">Zero Players Game (Computed vs Computer)</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="one-player" name="gameMode" value="1" class="form-check-input">
+            <label class="form-check-label" for="one-player">One Players Game (Computed vs Player)</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" id="two-player" name="gameMode" value="2" class="form-check-input">
+            <label class="form-check-label" for="two-player">Two Players Game (Player1 vs Player2)</label>
+          </div>
+        </div>
+        <div id="player-names" class="form-group d-flex flex-column form-group p-3 w-100">
+          <input type="text" class="form-control hide" name="player1" id="player1" defaultValue="Player1">
+          <input type="text" class="form-control hide mt-3" name="player2" id="player2" defaultValue="Player2">
+        </div>
+        <button class="btn btn-primary" id="submit-button" onClick="getPlayerNames()">Submit</button>
+      </div>
+    </div>
     <div style="float:left">
       <main>
       </main>
     </div>
     <div style="float: right;" class="control-center">
-        <input type="button" id="roll_die_button" class="animated-button" value="ROLL DIE" style="display: none;"/>
-        <div class="die-block">
+      <input type="button" id="roll_die_button" class="animated-button" value="ROLL DIE" style="display: none;" />
+      <div class="die-block">
         <div class="dice-container" id="die"></div>
         <br />
       </div>

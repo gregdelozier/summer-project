@@ -1,33 +1,46 @@
 function setup() {
-  playersHeading = createElement('h2', 'Enter player names');
-  playersHeading.position(20, 5);
-  const playerCount = 2
-  playerNames = []
-  for(let i=0; i<parseInt(playerCount); i++) {
-    playerNames[i] = createInput();
-    playerNames[i].position(40, 100 + (i*40));
-  }
-  button = createButton('submit');
-  button.position(40, (parseInt(playerCount) * 100));
-  button.mousePressed(drawAnimations);
 }
+
+function getPlayerNames(event) {
+    var ele = document.getElementsByName('gameMode');
+    for (i = 0; i < ele.length; i++) {
+        if (ele[i].checked)
+            gameMode = ele[i].value;
+    }
+  playersHeading = document.getElementById('players-heading')
+  document.getElementById('game-modes').remove();
+  playersHeading.innerText = "Enter players names";
+  switch(gameMode) {
+    case(GameMode.AUTOMATIC): {
+        drawAnimations();
+    }
+    case(GameMode.SEMI_AUTOMATIC): {
+        document.getElementById('player1').classList.remove('hide');
+        break;
+    }
+    case(GameMode.MANUAL): {
+        document.getElementById('player1').classList.remove('hide');
+        document.getElementById('player2').classList.remove('hide');
+        break;
+    }
+  }
+  button = document.getElementById('submit-button');
+  button.setAttribute('onClick', 'drawAnimations()');
+}
+
+
 
 function drawAnimations() {
     createCanvas(500, 500); 
     // initialize board logically
     genBoard();
-    // initialize locations of snakes
-    // genSnakes();
-    // initialize locations of ladders
     genLadders(); 
     playerNamesEntered = true;
     playersHeading.remove();
     button.remove();
-    for(i=0; i< playerNames.length; i++) {
-        players[i].name = playerNames[i].value();
-        //players.push(new player(`player${i+1}`, playerNames[i].value(), 1, false));
-        playerNames[i].remove();
-    }
+    players.push(new player('player1', document.getElementById('player1').value, 1, false));
+    players.push(new player('player2', document.getElementById('player2').value, 1, false));
+    document.getElementById('player-inputs').remove();
     document.getElementsByClassName("control-center")[0].style.display = "flex";
     displayPlayerNames();
     startPlay();

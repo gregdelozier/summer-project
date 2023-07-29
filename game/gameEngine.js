@@ -251,9 +251,9 @@ function playersInit() {
 
 const GameMode = 
 {
-    AUTOMATIC: 0,
-    SEMI_AUTOMATIC: 1,
-    MANUAL: 2,
+    AUTOMATIC: '0',
+    SEMI_AUTOMATIC: '1',
+    MANUAL: '2',
 }
 var gameMode = GameMode.MANUAL;
 
