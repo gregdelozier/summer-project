@@ -73,6 +73,8 @@ let boardBounds = {}
 let oldP1Position = 1;
 let oldP2Position = 1;
 
+let lastRoll;
+
 //----------------------------------------------------------------------------
 // Engine Functions
 
@@ -284,6 +286,7 @@ async function startPlay()
         diceValue = await rollDieAndGetValue();
 		document.getElementById("rolledValue").innerHTML =  "<b>" + diceValue +  "</b>";
         randomizeDice(diceValue);
+        lastRoll = diceValue;
         let waiting = await haultFlow();
         if(currentPlayerIndex == 0) {
             oldP1Position = currentPlayer.playerPosition;

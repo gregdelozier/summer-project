@@ -53,6 +53,9 @@ function displayPlayerNames() {
     document.getElementById("player2_pos").innerText = players[1].playerPosition;
 }
 
+let p1Path = [];
+let p2Path = [];
+
 function draw() {
   if(playerNamesEntered) {
     background(220);
@@ -64,7 +67,29 @@ function draw() {
     drawSnakes();
     // draw ladders on board
     drawLadders();
-    drawPlayers();
+    //drawPlayers();
+    if (players[0].playerPosition != oldP1Position){
+        let path = (genPathFromRoll(oldP1Position, lastRoll));
+        p1Path = path.reverse();
+        oldP1Position = players[0].playerPosition;
+    }
+    if (p1Path.length > 0){
+        drawPlayer1Moving(p1Path.pop());
+    }
+    else{
+        drawPlayer1Static(getBlockByID(players[0].playerPosition));
+    }
+    if (players[1].playerPosition != oldP2Position){
+        let path = (genPathFromRoll(oldP2Position, lastRoll));
+        p2Path = path.reverse();
+        oldP2Position = players[1].playerPosition;
+    }
+    if (p2Path.length > 0){
+        drawPlayer2Moving(p2Path.pop());
+    }
+    else{
+        drawPlayer2Static(getBlockByID(players[1].playerPosition));
+    }
   }
 }
 //----------------------------------------------------------------------------------------------
@@ -403,11 +428,6 @@ function drawSingleSnake(snake) {
 
 }
 
-
-  
-
-
-
 function star(x, y, radius1, radius2, npoints) {
     let angle = TWO_PI / npoints;
     let halfAngle = angle / 2.0;
@@ -423,26 +443,50 @@ function star(x, y, radius1, radius2, npoints) {
     endShape(CLOSE);
 }
 
-function drawPlayers(){
-    // console.log(players);
-    if(oldP1Position < players[0].playerPosition)
-        oldP1Position += 1;
-    if(oldP1Position > players[0].playerPosition)
-        oldP1Position -= 1;
-    drawPlayer1(getBlockByID(oldP1Position));
-    if(oldP2Position < players[1].playerPosition)
-        oldP2Position += 1;
-    if(oldP2Position > players[1].playerPosition)
-        oldP2Position -= 1;
-    drawPlayer2(getBlockByID(oldP2Position));
+function genPathFromRoll(oldPosition, roll){
+    let path = [];
+    let oldPos = getBlockByID(oldPosition);
+    let i = 1;
+    while(i <= roll){
+        let nextPos = getBlockByID(oldPosition + i);
+        let distX = (nextPos.xpos - oldPos.xpos) / 10;
+        let distY = (nextPos.ypos - oldPos.ypos) / 10;
+        for (let j = 0; j < 10; j ++){
+            if(nextPos.xpos < oldPos.xpos){
+                path.push({x:nextPos.xpos - (10 - j) * distX, y:oldPos.ypos});
+            }
+            else if(nextPos.xpos > oldPos.xpos){
+                path.push({x:oldPos.xpos + j * distX, y:oldPos.ypos});
+            }
+            else if(nextPos.ypos > oldPos.ypos){
+                path.push({x:oldPos.xpos, y:oldPos.ypos + j * distY});
+            }
+            else if(nextPos.ypos > oldPos.ypos){
+                path.push({x:oldPos.xpos, y:nextPos.ypos - (10 - j) * distY});
+            }
+        }
+        oldPos = nextPos;
+        i++;
+    }
+    return path;
 }
 
-function drawPlayer1(pos){
+function drawPlayer1Static(pos){
     fill(255, 0, 0);
     star(pos.xpos, pos.ypos, 20, 10, 5);
 }
 
-function drawPlayer2(pos){
+function drawPlayer2Static(pos){
     fill(0, 0, 255);
     star(pos.xpos, pos.ypos, 10, 20, 5);
+}
+
+function drawPlayer1Moving(path){
+    fill(255, 0, 0);
+    star(path.x, path.y, 20, 10, 5);
+}
+
+function drawPlayer2Moving(path){
+    fill(0, 0, 255);
+    star(path.x, path.y, 10, 20, 5);
 }
