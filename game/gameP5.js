@@ -339,7 +339,14 @@ function mapCoordToNum(x, y){
   }
   // generates array of points between two endpoints
   function linearMap(x1, y1, x2, y2){
-    let dist = Math.sqrt(Math.pow((y2 - y1), 2) + Math.pow((x2 - x1), 2));
+    if (x1 == x2){
+        let ret = [];
+        let splitY = (y1 - y2) / 35;
+        for (let i = 34; i >= 0; i--){
+            ret.push({x: x2, y: y2 + splitY * i});
+        }
+        return ret;
+    }
     let m = (y2 - y1) / (x2 - x1);
     let b = y2 - (m * x2);
     let ret = [];
