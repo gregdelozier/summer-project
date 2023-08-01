@@ -43,8 +43,22 @@ function drawAnimations() {
     playersHeading.remove();
     button.remove();
     players = [];
-    players.push(new player('player1', document.getElementById('player1').value, 1, false));
-    players.push(new player('player2', document.getElementById('player2').value, 1, false));
+    switch(gameMode){
+        case (GameMode.AUTOMATIC):
+            players.push(new player('player1', "Red", 1, false));
+            players.push(new player('player2', "Blue", 1, false));
+            break;
+        case (GameMode.SEMI_AUTOMATIC):
+            players.push(new player('player1', "Computer", 1, false));
+            players.push(new player('player2', document.getElementById('player1').value, 1, false));
+            break;
+        case (GameMode.MANUAL):
+            players.push(new player('player1', document.getElementById('player1').value, 1, false));
+            players.push(new player('player2', document.getElementById('player2').value, 1, false));
+            break;
+        default:
+            break;
+    }
     document.getElementById('player-inputs').remove();
     document.getElementsByClassName("control-center")[0].style.display = "flex";
     displayPlayerNames();
