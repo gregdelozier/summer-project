@@ -8,7 +8,15 @@
   <script src="gameP5.js"></script>
   <link rel="stylesheet" href="dice.css">
   <script src="dice.js" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <style>
+    .material-symbols-outlined {
+      font-variation-settings:
+      'FILL' 1,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 48
+    }
     .control-center {
       display: none;
       height: 500px;
@@ -76,10 +84,17 @@
     .show {
       display: block;
     }
+    #player1_p{
+      color: red;
+    }
+    #player2_p{
+      color: blue;
+    }
   </style>
 </head>
 
 <body>
+  <h1>Snakes and Ladders</h1>
   <div class="main">
     <div id="player-inputs" class="align-items-center container d-flex flex-column h-100 justify-content-center player-inputs">
       <div class="align-items-center d-flex flex-column justify-content-center inputs-block">
@@ -117,10 +132,16 @@
       </div>
       <div class="display-container">
         <p>DIE VALUE#: <span id="rolledValue"></span></p>
-        <span id="player1_p">PLAYER#1: <span id="player1_name"></span> - <span id="player1_pos"></span></span>
+        <span id="player1_p">
+          <span class="material-symbols-outlined">
+            star
+          </span>PLAYER#1: <span id="player1_name"></span> - <span id="player1_pos"></span></span>
         <br />
         <br />
-        <span id="player2_p">PLAYER#2: <span id="player2_name"></span> - <span id="player2_pos"></span></span>
+        <span id="player2_p">
+          <span class="material-symbols-outlined">
+            star
+          </span>PLAYER#2: <span id="player2_name"></span> - <span id="player2_pos"></span></span>
       </div>
     </div>
   </div>

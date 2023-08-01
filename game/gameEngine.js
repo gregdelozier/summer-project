@@ -297,6 +297,7 @@ async function startPlay()
 		movePlayer(currentPlayer, diceValue);
         document.getElementById(currentPlayer.id + "_pos").innerHTML = "<b>" + currentPlayer.playerPosition + "</b>";
 		currentPlayerIndex = (currentPlayerIndex+1)%(players.length);
+        await haultFlow();
         console.log(currentPlayerIndex);
 	}
 	
