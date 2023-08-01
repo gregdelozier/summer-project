@@ -141,6 +141,7 @@ function mapCoordToNum(x, y){
  
 
   function getSnakeDrawPoints(snake) {
+    // Four corners of the ladder's top
     let snake_head_cell = {
         'row': getBlockByID(snake.head).y_coord,
         'col': getBlockByID(snake.head).x_coord,
@@ -211,47 +212,84 @@ function mapCoordToNum(x, y){
         }
     
     }
-    head_1_coords = {
+    noFill()
+    
+    stroke([snake.color.red, snake.color.green, snake.color.blue])
+    // Snake endpoints
+    // console.log((snake_tail_cell.mid_left.x + snake_tail_cell.mid_right.x) / 2)
+    head_coords = {
         'x': (snake_head_cell.mid_left.x + snake_head_cell.mid_right.x) / 2,
         'y': (snake_head_cell.mid_left.y + snake_head_cell.mid_right.y) / 2
     }
-    head_2_coords = {
-        'x': snake_head_cell.mid_right.x - 10,
-        'y': snake_head_cell.mid_right.y
-    }
-
+    
     tail_coords = {
         'x':  (snake_tail_cell.mid_left.x + snake_tail_cell.mid_right.x) / 2,
         'y': (snake_tail_cell.mid_left.y + snake_tail_cell.mid_right.y) / 2
     }
     
-    head_tail_vector = {
-        'x': tail_coords.x - head_1_coords.x,
-        'y': tail_coords.y - head_1_coords.y
+    first_point = {
+        'x': head_coords.x + ((tail_coords.x - head_coords.x) * 1 / 3),
+        'y': head_coords.y + ((tail_coords.y - head_coords.y) * 1 / 3)
     }
 
-    head_tail_per_vector = {
-        'x': -head_tail_vector.x,
-        'y': head_tail_vector.y
+    second_point = {
+        'x': head_coords.x + ((tail_coords.x - head_coords.x) * 2 / 3),
+        'y': head_coords.y + ((tail_coords.y - head_coords.y) * 2 / 3)
     }
+
+    snake_vector = {
+        'x': (tail_coords.x - head_coords.x),
+        'y': (tail_coords.y - head_coords.y)
+    }
+
+    // Normalize.
+    snake_vector_value = dist(snake_vector.x, snake_vector.y, 0, 0);
+
+    snake_vector = {
+        'x': snake_vector.x / snake_vector_value,
+        'y': snake_vector.y / snake_vector_value
+    }
+
+    snake_vector_normal = {
+        'x': 1,
+        'y': -(snake_vector.x / snake_vector.y)
+    }
+
+    snake_vector_normal2 = {
+        'x': -1,
+        'y': (snake_vector.x / snake_vector.y)
+    }
+
+    snake_vector_normal_value = dist(snake_vector_normal.x, snake_vector_normal.y, 0, 0);
+    snake_vector_normal = {
+        'x': snake_vector_normal.x / snake_vector_normal_value,
+        'y': snake_vector_normal.y / snake_vector_normal_value
+    }
+    
+    snake_vector_normal2_value = dist(snake_vector_normal2.x, snake_vector_normal2.y, 0, 0);
+    snake_vector_normal2 = {
+        'x': snake_vector_normal2.x / snake_vector_normal2_value,
+        'y': snake_vector_normal2.y / snake_vector_normal2_value
+    }
+    //console.log(snake_vector_normal2)
 
     first_anchor = {
-        // 'x': (tail_coords.x - head_1_coords.x) * 1 / 4  + head_tail_per_vector.x * 3,
-        // 'y': (tail_coords.y - head_1_coords.y) * 1 / 4  + head_tail_per_vector.y * 3
-        'x': (width) / 2, 'y' : (height) / 2
+        'x': first_point.x  + (snake_vector_normal.x * 0.5 * snake_vector_value),
+        'y': first_point.y  + (snake_vector_normal.y * 0.5 * snake_vector_value)
     }
 
     second_anchor = {
-        // 'x': (tail_coords.x - head_1_coords.x) * 3 / 4 - head_tail_per_vector.x * 3,
-        // 'y': (tail_coords.y - head_1_coords.y) * 3 / 4 - head_tail_per_vector.y * 3,
-        'x': (width  + 10) / 2, 'y': (height + 10) / 2
+        'x': second_point.x - snake_vector_normal.x * 0.5 * snake_vector_value,
+        'y': second_point.y - snake_vector_normal.y * 0.5 * snake_vector_value
+        // 'x': (width  + 10) / 2, 'y': (height + 10) / 2
     }
+    
     
 
     return {
         'first_anchor': first_anchor,
         'second_anchor': second_anchor,
-        'head_coords': head_1_coords,
+        'head_coords': head_coords,
         'tail_coords': tail_coords
     }
   }
@@ -565,43 +603,76 @@ function drawSingleSnake(snake) {
     stroke([snake.color.red, snake.color.green, snake.color.blue])
     // Snake endpoints
     // console.log((snake_tail_cell.mid_left.x + snake_tail_cell.mid_right.x) / 2)
-    head_1_coords = {
+    head_coords = {
         'x': (snake_head_cell.mid_left.x + snake_head_cell.mid_right.x) / 2,
         'y': (snake_head_cell.mid_left.y + snake_head_cell.mid_right.y) / 2
     }
-    head_2_coords = {
-        'x': snake_head_cell.mid_right.x - 10,
-        'y': snake_head_cell.mid_right.y
-    }
-
+    
     tail_coords = {
         'x':  (snake_tail_cell.mid_left.x + snake_tail_cell.mid_right.x) / 2,
         'y': (snake_tail_cell.mid_left.y + snake_tail_cell.mid_right.y) / 2
     }
     
-    head_tail_vector = {
-        'x': tail_coords.x - head_1_coords.x,
-        'y': tail_coords.y - head_1_coords.y
+    first_point = {
+        'x': head_coords.x + ((tail_coords.x - head_coords.x) * 1 / 3),
+        'y': head_coords.y + ((tail_coords.y - head_coords.y) * 1 / 3)
     }
 
-    head_tail_per_vector = {
-        'x': -head_tail_vector.x,
-        'y': head_tail_vector.y
+    second_point = {
+        'x': head_coords.x + ((tail_coords.x - head_coords.x) * 2 / 3),
+        'y': head_coords.y + ((tail_coords.y - head_coords.y) * 2 / 3)
     }
+
+    snake_vector = {
+        'x': (tail_coords.x - head_coords.x),
+        'y': (tail_coords.y - head_coords.y)
+    }
+
+    // Normalize.
+    snake_vector_value = dist(snake_vector.x, snake_vector.y, 0, 0);
+
+    snake_vector = {
+        'x': snake_vector.x / snake_vector_value,
+        'y': snake_vector.y / snake_vector_value
+    }
+
+    snake_vector_normal = {
+        'x': 1,
+        'y': -(snake_vector.x / snake_vector.y)
+    }
+
+    snake_vector_normal2 = {
+        'x': -1,
+        'y': (snake_vector.x / snake_vector.y)
+    }
+
+    snake_vector_normal_value = dist(snake_vector_normal.x, snake_vector_normal.y, 0, 0);
+    snake_vector_normal = {
+        'x': snake_vector_normal.x / snake_vector_normal_value,
+        'y': snake_vector_normal.y / snake_vector_normal_value
+    }
+    
+    snake_vector_normal2_value = dist(snake_vector_normal2.x, snake_vector_normal2.y, 0, 0);
+    snake_vector_normal2 = {
+        'x': snake_vector_normal2.x / snake_vector_normal2_value,
+        'y': snake_vector_normal2.y / snake_vector_normal2_value
+    }
+    //console.log(snake_vector_normal2)
 
     first_anchor = {
-        // 'x': (tail_coords.x - head_1_coords.x) * 1 / 4  + head_tail_per_vector.x * 3,
-        // 'y': (tail_coords.y - head_1_coords.y) * 1 / 4  + head_tail_per_vector.y * 3
-        'x': (width) / 2, 'y' : (height) / 2
+        'x': first_point.x  + (snake_vector_normal.x * 0.5 * snake_vector_value),
+        'y': first_point.y  + (snake_vector_normal.y * 0.5 * snake_vector_value)
     }
 
     second_anchor = {
-        // 'x': (tail_coords.x - head_1_coords.x) * 3 / 4 - head_tail_per_vector.x * 3,
-        // 'y': (tail_coords.y - head_1_coords.y) * 3 / 4 - head_tail_per_vector.y * 3,
-        'x': (width  + 10) / 2, 'y': (height + 10) / 2
+        'x': second_point.x - snake_vector_normal.x * 0.5 * snake_vector_value,
+        'y': second_point.y - snake_vector_normal.y * 0.5 * snake_vector_value
+        // 'x': (width  + 10) / 2, 'y': (height + 10) / 2
     }
+    //console.log(first_anchor);
+    //console.log(second_anchor);
     strokeWeight(10);
-    bezier(head_1_coords.x, head_1_coords.y, first_anchor.x, first_anchor.y, second_anchor.x, second_anchor.y, tail_coords.x,  tail_coords.y);
+    bezier(head_coords.x, head_coords.y, first_anchor.x, first_anchor.y, second_anchor.x, second_anchor.y, tail_coords.x,  tail_coords.y);
     // bezier(head_2_coords.x, head_2_coords.y, first_anchor.x + 10, first_anchor.y, second_anchor.x, second_anchor.y, tail_coords.x,  tail_coords.y);
 
 }
