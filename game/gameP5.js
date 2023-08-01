@@ -34,10 +34,12 @@ function drawAnimations() {
     createCanvas(500, 500); 
     // initialize board logically
     genBoard();
-    genLadders(); 
+    //genLadders(); 
+    genLadderMidPoints();
     playerNamesEntered = true;
     playersHeading.remove();
     button.remove();
+    players = [];
     players.push(new player('player1', document.getElementById('player1').value, 1, false));
     players.push(new player('player2', document.getElementById('player2').value, 1, false));
     document.getElementById('player-inputs').remove();
@@ -69,7 +71,7 @@ function draw() {
     drawLadders();
     //drawPlayers();
     if (players[0].playerPosition != oldP1Position){
-        let path = (genPathFromRoll(oldP1Position, lastRoll));
+        let path = (genPathFromRoll(players[0], oldP1Position, lastRoll));
         p1Path = path.reverse();
         oldP1Position = players[0].playerPosition;
     }
@@ -80,7 +82,7 @@ function draw() {
         drawPlayer1Static(getBlockByID(players[0].playerPosition));
     }
     if (players[1].playerPosition != oldP2Position){
-        let path = (genPathFromRoll(oldP2Position, lastRoll));
+        let path = (genPathFromRoll(players[1], oldP2Position, lastRoll));
         p2Path = path.reverse();
         oldP2Position = players[1].playerPosition;
     }
@@ -119,6 +121,32 @@ function mapCoordToNum(x, y){
               board.push(piece);
           }
       }
+  }
+
+  //----------------------------------------------------------------------------------------
+  // Midpoint Generation
+
+  // generates array of midpoints for ladders that player follows on animation
+  function genLadderMidPoints(){
+    for (let ldr of ladders){
+        let top = getBlockByID(ldr.top);
+        let btm = getBlockByID(ldr.bottom);
+        ldr.rungs = linearMap(btm.xpos, btm.ypos, top.xpos, top.ypos);
+    }
+  }
+
+  // generates array of points between two endpoints
+  function linearMap(x1, y1, x2, y2){
+    let dist = Math.sqrt(Math.pow((y2 - y1), 2) + Math.pow((x2 - x1), 2));
+    let m = (y2 - y1) / (x2 - x1);
+    let b = y2 - (m * x2);
+    let ret = [];
+    let splitX = (x2 - x1) / 35;
+    for (let i = 0; i < 35; i++){
+        ret.push({x: x1 + splitX * i, y: m * (x1 + splitX * i) + b});
+    }
+    ret.push({x: x2, y: y2});
+    return ret;
   }
   
   //----------------------------------------------------------------------------------------
@@ -443,9 +471,11 @@ function star(x, y, radius1, radius2, npoints) {
     endShape(CLOSE);
 }
 
-function genPathFromRoll(oldPosition, roll){
+function genPathFromRoll(player, oldPosition, roll){
     let path = [];
     let oldPos = getBlockByID(oldPosition);
+    let diePos = getBlockByID(oldPosition + roll);
+   
     let i = 1;
     while(i <= roll){
         let nextPos = getBlockByID(oldPosition + i);
@@ -458,7 +488,7 @@ function genPathFromRoll(oldPosition, roll){
             else if(nextPos.xpos > oldPos.xpos){
                 path.push({x:oldPos.xpos + j * distX, y:oldPos.ypos});
             }
-            else if(nextPos.ypos > oldPos.ypos){
+            else if(nextPos.ypos < oldPos.ypos){
                 path.push({x:oldPos.xpos, y:oldPos.ypos + j * distY});
             }
             else if(nextPos.ypos > oldPos.ypos){
@@ -467,6 +497,17 @@ function genPathFromRoll(oldPosition, roll){
         }
         oldPos = nextPos;
         i++;
+    }
+    for (let ldr of ladders){
+        console.log(ldr.bottom);
+        if (ldr.bottom == diePos.id){
+            for (let i = 0; i < 35; i++){
+                path.push({x: diePos.xpos, y: diePos.ypos});
+            }
+            for (let i = 0; i < ldr.rungs.length; i++){
+                path.push(ldr.rungs[i]);
+            }
+        }
     }
     return path;
 }

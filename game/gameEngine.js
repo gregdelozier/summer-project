@@ -291,7 +291,6 @@ async function startPlay()
         if(currentPlayerIndex == 0) {
             oldP1Position = currentPlayer.playerPosition;
         }
-        
         if(currentPlayerIndex == 1) {
             oldP2Position = currentPlayer.playerPosition;
         }
