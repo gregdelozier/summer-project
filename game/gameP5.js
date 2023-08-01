@@ -12,6 +12,8 @@ function getPlayerNames(event) {
   playersHeading.innerText = "Enter players names";
   switch(gameMode) {
     case(GameMode.AUTOMATIC): {
+        button = document.getElementById('submit-button');
+        button.setAttribute('onClick', 'drawAnimations()');
         drawAnimations();
     }
     case(GameMode.SEMI_AUTOMATIC): {
@@ -499,7 +501,6 @@ function genPathFromRoll(player, oldPosition, roll){
         i++;
     }
     for (let ldr of ladders){
-        console.log(ldr.bottom);
         if (ldr.bottom == diePos.id){
             for (let i = 0; i < 35; i++){
                 path.push({x: diePos.xpos, y: diePos.ypos});
