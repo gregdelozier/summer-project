@@ -12,6 +12,7 @@ function getPlayerNames(event) {
   playersHeading.innerText = "Enter players names";
   switch(gameMode) {
     case(GameMode.AUTOMATIC): {
+        button = document.getElementById('submit-button');
         drawAnimations();
     }
     case(GameMode.SEMI_AUTOMATIC): {
