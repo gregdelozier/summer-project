@@ -280,7 +280,7 @@ function mapCoordToNum(x, y){
         // let top = getBlockByID(snk.top);
         // let btm = getBlockByID(snk.bottom);
 
-        snk.steps = genSingleSnakeMidPoints(snk);
+        snk.body = genSingleSnakeMidPoints(snk);
     }
   }
   // generates array of points between two endpoints
@@ -664,9 +664,9 @@ function genPathFromRoll(player, oldPosition, roll){
             for (let i = 0; i < 35; i++){
                 path.push({x: diePos.xpos, y: diePos.ypos});
             }
-            print(snk.steps)
-            for (let i = 0; i < snk.steps.length; i++){
-                path.push(snk.steps[i]);
+            print(snk.body)
+            for (let i = 0; i < snk.body.length; i++){
+                path.push(snk.body[i]);
             }
         }
     }
