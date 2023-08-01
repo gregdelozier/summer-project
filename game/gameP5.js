@@ -36,6 +36,7 @@ function drawAnimations() {
     genBoard();
     //genLadders(); 
     genLadderMidPoints();
+    genSnakeMidPoints();
     playerNamesEntered = true;
     playersHeading.remove();
     button.remove();
@@ -135,6 +136,153 @@ function mapCoordToNum(x, y){
     }
   }
 
+ 
+
+  function getSnakeDrawPoints(snake) {
+    let snake_head_cell = {
+        'row': getBlockByID(snake.head).y_coord,
+        'col': getBlockByID(snake.head).x_coord,
+    
+        'upper_left': {
+            'x': getBlockByID(snake.head).xpos - width / 20,
+            'y': getBlockByID(snake.head).ypos - height / 20
+        },
+    
+        'upper_right': {
+            'x': getBlockByID(snake.head).xpos + width / 20,
+            'y': getBlockByID(snake.head).ypos - height / 20
+        },
+    
+        'lower_left': {
+            'x': getBlockByID(snake.head).xpos - width / 20,
+            'y': getBlockByID(snake.head).ypos + width / 20
+        },
+    
+        'lower_right': {
+            'x': getBlockByID(snake.head).xpos + width / 20,
+            'y': getBlockByID(snake.head).ypos + width / 20
+        },
+    
+        'mid_left': {
+            'x': getBlockByID(snake.head).xpos - width / 20,
+            'y': getBlockByID(snake.head).ypos
+        },
+    
+        'mid_right': {
+            'x': getBlockByID(snake.head).xpos + width / 20,
+            'y': getBlockByID(snake.head).ypos
+        }
+    }
+      
+    let snake_tail_cell = {
+        'row': getBlockByID(snake.tail).y_coord,
+        'col': getBlockByID(snake.tail).x_coord,
+    
+        'upper_left': {
+            'x': getBlockByID(snake.tail).xpos - width / 20,
+            'y': getBlockByID(snake.tail).ypos - height / 20
+        },
+    
+        'upper_right': {
+            'x': getBlockByID(snake.tail).xpos + width / 20,
+            'y': getBlockByID(snake.tail).ypos - height / 20
+        },
+    
+        'lower_left': {
+            'x': getBlockByID(snake.tail).xpos - width / 20,
+            'y': getBlockByID(snake.tail).ypos + width / 20
+        },
+    
+        'lower_right': {
+            'x': getBlockByID(snake.tail).xpos + width / 20,
+            'y': getBlockByID(snake.tail).ypos + width / 20
+        },
+    
+        'mid_left': {
+            'x': getBlockByID(snake.tail).xpos - width / 20,
+            'y': getBlockByID(snake.tail).ypos
+        },
+    
+        'mid_right': {
+            'x': getBlockByID(snake.tail).xpos + width / 20,
+            'y': getBlockByID(snake.tail).ypos
+        }
+    
+    }
+    head_1_coords = {
+        'x': (snake_head_cell.mid_left.x + snake_head_cell.mid_right.x) / 2,
+        'y': (snake_head_cell.mid_left.y + snake_head_cell.mid_right.y) / 2
+    }
+    head_2_coords = {
+        'x': snake_head_cell.mid_right.x - 10,
+        'y': snake_head_cell.mid_right.y
+    }
+
+    tail_coords = {
+        'x':  (snake_tail_cell.mid_left.x + snake_tail_cell.mid_right.x) / 2,
+        'y': (snake_tail_cell.mid_left.y + snake_tail_cell.mid_right.y) / 2
+    }
+    
+    head_tail_vector = {
+        'x': tail_coords.x - head_1_coords.x,
+        'y': tail_coords.y - head_1_coords.y
+    }
+
+    head_tail_per_vector = {
+        'x': -head_tail_vector.x,
+        'y': head_tail_vector.y
+    }
+
+    first_anchor = {
+        // 'x': (tail_coords.x - head_1_coords.x) * 1 / 4  + head_tail_per_vector.x * 3,
+        // 'y': (tail_coords.y - head_1_coords.y) * 1 / 4  + head_tail_per_vector.y * 3
+        'x': (width) / 2, 'y' : (height) / 2
+    }
+
+    second_anchor = {
+        // 'x': (tail_coords.x - head_1_coords.x) * 3 / 4 - head_tail_per_vector.x * 3,
+        // 'y': (tail_coords.y - head_1_coords.y) * 3 / 4 - head_tail_per_vector.y * 3,
+        'x': (width  + 10) / 2, 'y': (height + 10) / 2
+    }
+    
+
+    return {
+        'first_anchor': first_anchor,
+        'second_anchor': second_anchor,
+        'head_coords': head_1_coords,
+        'tail_coords': tail_coords
+    }
+  }
+
+  function genSingleSnakeMidPoints(snk) {
+    //strokeWeight(10);
+
+    snk_points = getSnakeDrawPoints(snk)
+
+    let ret = []
+    for(let i = 0; i < 35; i++) {
+        let t = i / 35
+
+        ret.push({x: bezierPoint(snk_points.head_coords.x, 
+                                snk_points.first_anchor.x, 
+                                snk_points.second_anchor.x, snk_points.tail_coords.x, t),
+                                y: bezierPoint(snk_points.head_coords.y, 
+                                    snk_points.first_anchor.y, 
+                                    snk_points.second_anchor.y, snk_points.tail_coords.y, t)});
+    }
+    console.log('returned')
+    return ret
+    // bezier(head_1_coords.x, head_1_coords.y, first_anchor.x, first_anchor.y, second_anchor.x, second_anchor.y, tail_coords.x,  tail_coords.y);
+  }
+
+  function genSnakeMidPoints() {
+    for (let snk of snakes) {
+        // let top = getBlockByID(snk.top);
+        // let btm = getBlockByID(snk.bottom);
+
+        snk.steps = genSingleSnakeMidPoints(snk);
+    }
+  }
   // generates array of points between two endpoints
   function linearMap(x1, y1, x2, y2){
     let dist = Math.sqrt(Math.pow((y2 - y1), 2) + Math.pow((x2 - x1), 2));
@@ -506,6 +654,19 @@ function genPathFromRoll(player, oldPosition, roll){
             }
             for (let i = 0; i < ldr.rungs.length; i++){
                 path.push(ldr.rungs[i]);
+            }
+        }
+    }
+
+    for (let snk of snakes){
+        // console.log(ldr.bottom);
+        if (snk.head == diePos.id){
+            for (let i = 0; i < 35; i++){
+                path.push({x: diePos.xpos, y: diePos.ypos});
+            }
+            print(snk.steps)
+            for (let i = 0; i < snk.steps.length; i++){
+                path.push(snk.steps[i]);
             }
         }
     }
